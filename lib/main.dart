@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tourism_dept_app/screens/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,8 +25,10 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: Text('Hello, World!'),
+      initialRoute: '/',
+      routes: {
+        '/':(context) => const Home(),
+      },
     );
   }
 }
-
