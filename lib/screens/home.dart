@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tourism_dept_app/widgets/categories.dart';
+import 'package:tourism_dept_app/widgets/post_card.dart';
 import 'package:tourism_dept_app/widgets/search_box.dart';
 
 import '../widgets/bottom_bar.dart';
@@ -24,7 +25,8 @@ class Home extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
                 ),
                 SearchBox(),
-                Categories()
+                Categories(),
+                PostCard()
               ],
             )),
         bottomNavigationBar: const BottomBar());
