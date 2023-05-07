@@ -11,9 +11,18 @@ class Home extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Home'),
         ),
-        body: const Center(
-          child: Text('Home page'),
-        ),
+        body: Container(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text('Hi there 👋', style: TextStyle(fontSize: 20.0)),
+                Text(
+                  'Take a virtual museum tour',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
+                )
+              ],
+            )),
         bottomNavigationBar: const BottomBar());
   }
 }
