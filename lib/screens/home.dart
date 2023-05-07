@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/bottom_bar.dart';
+
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -11,6 +13,7 @@ class Home extends StatelessWidget {
         ),
         body: const Center(
           child: Text('Home page'),
-        ));
+        ),
+        bottomNavigationBar: const BottomBar());
   }
 }
