@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tourism_dept_app/widgets/categories.dart';
 import 'package:tourism_dept_app/widgets/search_box.dart';
 
 import '../widgets/bottom_bar.dart';
@@ -22,7 +23,8 @@ class Home extends StatelessWidget {
                   'Take a virtual museum tour',
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
                 ),
-                SearchBox()
+                SearchBox(),
+                Categories()
               ],
             )),
         bottomNavigationBar: const BottomBar());
