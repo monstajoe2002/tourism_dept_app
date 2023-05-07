@@ -17,7 +17,7 @@ class Categories extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(10)),
               selectedBorderColor: Colors.blueGrey,
               unselectedBorderColor: Colors.blueGrey,
-              elevation: 5,
+              // elevation: 5,
               mainGroupAlignment: MainGroupAlignment.start,
               groupingType: GroupingType.row,
               spacing: 5),
