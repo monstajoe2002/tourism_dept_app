@@ -18,15 +18,18 @@ class Home extends StatelessWidget {
             padding: const EdgeInsets.all(30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text('Hi there 👋', style: TextStyle(fontSize: 20.0)),
-                Text(
+              children: [
+                const Text('Hi there 👋', style: TextStyle(fontSize: 20.0)),
+                const Text(
                   'Take a virtual museum tour',
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
                 ),
-                SearchBox(),
-                Categories(),
-                PostCard()
+                const SearchBox(),
+                const Categories(),
+                Container(
+                  margin: const EdgeInsets.only(top: 30),
+                  child: const Center(child: PostCard()),
+                )
               ],
             )),
         bottomNavigationBar: const BottomBar());
