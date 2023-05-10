@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:stylish_bottom_bar/model/bar_items.dart';
+import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);
@@ -17,21 +19,37 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+    return StylishBottomBar(
+      items: [
+        BottomBarItem(
+          icon: const Icon(Icons.home),
+          title: const Text('Home'),
+          backgroundColor: Colors.blueAccent.shade200,
+        ),
         // BottomNavigationBarItem(
         //     icon: Icon(Icons.favorite_rounded), label: 'Favorites'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline_rounded), label: 'New Post'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.notifications), label: 'Notifications'),
+        BottomBarItem(
+            icon: const Icon(Icons.add_circle_outline_rounded),
+            title: const Text('New Post'),
+            backgroundColor: Colors.greenAccent.shade700,
+            
+            ),
+        BottomBarItem(
+            icon: const Icon(Icons.notifications),
+            title: const Text('Notifications'),
+            backgroundColor: Colors.yellow.shade700,
+            
+            ),
         // BottomNavigationBarItem(
         //     icon: Icon(Icons.account_circle_rounded), label: 'Profile'),
       ],
-      type: BottomNavigationBarType
-          .fixed, // this is added when the items in the bottom bar are more than 3
       currentIndex: _selectedIndex,
+      option: BubbleBarOptions(
+        barStyle: BubbleBarStyle.horizotnal,
+        opacity: 0.4,
+        iconSize: 24,
+        inkEffect: true,
+      ),
       onTap: _onItemTapped,
     );
   }
