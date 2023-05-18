@@ -11,8 +11,21 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Home'),
+        appBar: AppBar(),
+        drawer: Drawer(
+          child: ListView(
+            children:  [
+              InkWell(
+                child: ListTile(
+                  leading: Icon(Icons.logout_rounded),
+                  title: Text('Logout'),
+                  onTap: (){
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+            ],
+          ),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -29,13 +42,7 @@ class Home extends StatelessWidget {
                   const Categories(),
                   Container(
                     margin: const EdgeInsets.only(top: 30),
-                    child: Center(
-                        child: GestureDetector(
-                      child: const PostCard(),
-                      onTap: () {
-                        debugPrint('PostCard tapped');
-                      },
-                    )),
+                    child: const Center(child: PostCard()),
                   )
                 ],
               )),

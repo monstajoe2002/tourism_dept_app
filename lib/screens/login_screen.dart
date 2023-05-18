@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/basic.dart';
-
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:tourism_dept_app/screens/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -141,10 +137,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget BuildEmail() {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text('Email',
+      const Text('Email',
           style: TextStyle(
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       Container(
@@ -152,12 +148,12 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                   color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
             ]),
         height: 60,
-        child: TextField(
+        child: const TextField(
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.black, fontSize: 25),
           decoration: InputDecoration(
@@ -173,10 +169,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget BuildPassword() {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text('Password',
+      const Text('Password',
           style: TextStyle(
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
       Container(
@@ -184,12 +180,12 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                   color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
             ]),
         height: 60,
-        child: TextField(
+        child: const TextField(
           obscureText: true,
           style: TextStyle(color: Colors.black, fontSize: 25),
           decoration: InputDecoration(
@@ -206,10 +202,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget BuildPasswordBtn() {
     return Container(
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: 0),
+        padding: const EdgeInsets.only(right: 0),
         child: TextButton(
             onPressed: () => print('forgot password button was pressed'),
-            child: Text(
+            child: const Text(
               'Forgot Password?',
               style: TextStyle(
                 color: Colors.white,
@@ -222,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return GestureDetector(
         onTap: () => print('Sign up button was pressed'),
         child: RichText(
-          text: TextSpan(
+          text: const TextSpan(
             children: [
               TextSpan(
                 text: 'Don\'t have an account? ',
@@ -247,12 +243,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
 Widget buildLoginBtn() {
   return Container(
-      padding: EdgeInsets.symmetric(),
+      padding: const EdgeInsets.symmetric(),
       width: double.infinity,
       height: 40,
       child: ElevatedButton(
         onPressed: () {Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SignUpScreen()));},
+                MaterialPageRoute(builder: (context) => const SignUpScreen()));},
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white,
             onPrimary: Colors.blue,
@@ -262,7 +258,7 @@ Widget buildLoginBtn() {
               fontSize: 18,
               fontWeight: FontWeight.bold,
             )),
-        child: Text('LOGIN'),
+        child: const Text('LOGIN'),
       ));
 }
 
@@ -276,7 +272,7 @@ Widget build(BuildContext context) {
         Container(
           height: double.infinity,
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -288,22 +284,22 @@ Widget build(BuildContext context) {
               ])),
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 120),
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text('Sign In',
+              const Text('Sign In',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 40,
                       fontWeight: FontWeight.bold)),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               BuildEmail(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               BuildPassword(),
               //BuildPasswordBtn(),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               buildLoginBtn(),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               buildSignupBtn()
             ]),
           ),
