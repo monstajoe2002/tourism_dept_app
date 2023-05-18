@@ -11,8 +11,18 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Home'),
+        appBar: AppBar(),
+        drawer: Drawer(
+          child: ListView(
+            children: const [
+              InkWell(
+                child: ListTile(
+                  leading: Icon(Icons.logout_rounded),
+                  title: Text('Logout'),
+                ),
+              )
+            ],
+          ),
         ),
         body: SingleChildScrollView(
           child: Container(
