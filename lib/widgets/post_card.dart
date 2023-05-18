@@ -18,10 +18,11 @@ class PostCard extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade400, width: 2.0),
         ),
         child: Column(children: [
-          Image.network(
-            'https://picsum.photos/256/235',
-            fit: BoxFit.cover,
-          ),
+          const Placeholder(
+            fallbackHeight: 235,
+            fallbackWidth: 256,
+            ),
+         
           Container(
             padding: const EdgeInsets.all(20),
             child: Row(
@@ -36,8 +37,8 @@ class PostCard extends StatelessWidget {
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 5),
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Icon(Icons.pin_drop),
                           Text('Cairo'),
                         ],
