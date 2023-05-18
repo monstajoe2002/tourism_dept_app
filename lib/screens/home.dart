@@ -14,11 +14,14 @@ class Home extends StatelessWidget {
         appBar: AppBar(),
         drawer: Drawer(
           child: ListView(
-            children: const [
+            children:  [
               InkWell(
                 child: ListTile(
                   leading: Icon(Icons.logout_rounded),
                   title: Text('Logout'),
+                  onTap: (){
+                    Navigator.of(context).pop();
+                  },
                 ),
               )
             ],

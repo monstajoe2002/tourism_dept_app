@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tourism_dept_app/screens/home.dart';
 
+import 'screens/login_screen.dart';
+import 'screens/signup_screen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -27,7 +30,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/':(context) => const Home(),
+        '/': (context) => const LoginScreen(),
+        '/home': (context) => const Home(),
       },
     );
   }
