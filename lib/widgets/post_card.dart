@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   const PostCard({Key? key}) : super(key: key);
 
+  @override
+  State<PostCard> createState() => _PostCardState();
+}
+
+void onRatingUpdate(double rating) {
+  debugPrint("rating value is $rating");
+}
+
+class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -21,44 +31,39 @@ class PostCard extends StatelessWidget {
           const Placeholder(
             fallbackHeight: 235,
             fallbackWidth: 256,
-            ),
-         
+          ),
           Container(
             padding: const EdgeInsets.all(20),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'National Museum',
                       style: TextStyle(fontWeight: FontWeight.w500),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 5),
-                      child: const Row(
-                        children: [
-                          Icon(Icons.pin_drop),
-                          Text('Cairo'),
-                        ],
-                      ),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Icon(Icons.pin_drop),
+                        Text('Cairo'),
+                      ],
                     ),
                   ],
                 ),
-                Container(
-                  margin: const EdgeInsets.only(left: 5),
-                  child: Row(
+                const SizedBox(width: 10),
+                RatingBar.builder(
+                    itemBuilder: (context, _) {
+                      return Icon(Icons.star,
+                          color: Colors.yellow.shade700);
+                    },
+                    onRatingUpdate: onRatingUpdate,
+                    itemSize: 18,
                     
-                    children: [
-                      Icon(Icons.star, color: Colors.yellow.shade700, size: 20),
-                      Icon(Icons.star, color: Colors.yellow.shade700, size: 20),
-                      Icon(Icons.star, color: Colors.yellow.shade700, size: 20),
-                      Icon(Icons.star, color: Colors.yellow.shade700, size: 20),
-                      Icon(Icons.star, color: Colors.yellow.shade700, size: 20),
-                    ],
-                  ),
-                )
+                    )
+               
               ],
             ),
           )
