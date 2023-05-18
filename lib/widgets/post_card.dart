@@ -15,59 +15,63 @@ void onRatingUpdate(double rating) {
 class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
+    return InkWell(
+      onTap: () {
+        // TODO: Navigate to details screen
+      },
       borderRadius: BorderRadius.circular(20),
-      child: Container(
-        alignment: Alignment.center,
-        constraints: const BoxConstraints(
-          maxWidth: 260,
-          maxHeight: 325,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.grey.shade400, width: 2.0),
-        ),
-        child: Column(children: [
-          const Placeholder(
-            fallbackHeight: 235,
-            fallbackWidth: 256,
+      
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          alignment: Alignment.center,
+          constraints: const BoxConstraints(
+            maxWidth: 260,
+            maxHeight: 325,
           ),
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'National Museum',
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      children: [
-                        Icon(Icons.pin_drop),
-                        Text('Cairo'),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 10),
-                RatingBar.builder(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.grey.shade400, width: 2.0),
+          ),
+          child: Column(children: [
+            const Placeholder(
+              fallbackHeight: 235,
+              fallbackWidth: 256,
+            ),
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'National Museum',
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Icon(Icons.pin_drop),
+                          Text('Cairo'),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  RatingBar.builder(
                     itemBuilder: (context, _) {
-                      return Icon(Icons.star,
-                          color: Colors.yellow.shade700);
+                      return Icon(Icons.star, color: Colors.yellow.shade700);
                     },
                     onRatingUpdate: onRatingUpdate,
                     itemSize: 18,
-                    
-                    )
-               
-              ],
-            ),
-          )
-        ]),
+                  )
+                ],
+              ),
+            )
+          ]),
+        ),
       ),
     );
   }

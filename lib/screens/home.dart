@@ -39,13 +39,7 @@ class Home extends StatelessWidget {
                   const Categories(),
                   Container(
                     margin: const EdgeInsets.only(top: 30),
-                    child: Center(
-                        child: GestureDetector(
-                      child: const PostCard(),
-                      onTap: () {
-                        debugPrint('PostCard tapped');
-                      },
-                    )),
+                    child: const Center(child: PostCard()),
                   )
                 ],
               )),
