@@ -37,12 +37,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   group_button: ^5.2.2
   stylish_bottom_bar: ^1.0.1
-<<<<<<< HEAD
-  flutter_rating_bar: ^4.0.1
-=======
   cloud_firestore: ^4.7.1
   firebase_core: ^2.13.0
->>>>>>> feature/auth-screens
+  flutter_rating_bar: ^4.0.1
+  image_picker: ^0.8.7+5
+  http: ^0.13.6
 
 dev_dependencies:
   flutter_test:
