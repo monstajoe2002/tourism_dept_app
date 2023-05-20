@@ -20,7 +20,6 @@ class _PostCardState extends State<PostCard> {
         // TODO: Navigate to details screen
       },
       borderRadius: BorderRadius.circular(20),
-      
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Container(
@@ -43,7 +42,7 @@ class _PostCardState extends State<PostCard> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(

@@ -4,7 +4,7 @@ import 'package:tourism_dept_app/screens/loading_screen.dart';
 import 'package:tourism_dept_app/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tourism_dept_app/screens/login_screen.dart';
-import 'package:tourism_dept_app/screens/signup_screen.dart';
+import 'package:tourism_dept_app/screens/new_post.dart';
 
 //import 'screens/login_screen.dart';
 //import 'screens/signup_screen.dart';
@@ -50,22 +50,19 @@ class _MyAppState extends State<MyApp> {
   Widget ShowAppropriateScreen() {
     if (_intialized) {
       {
-   print('el intualization b 1');
-    //var postsInstance = FirebaseFirestore.instance.collection('Post');
-   // var postsSnapshots = postsInstance.snapshots();
-  //  postsSnapshots.listen((snapshot) {
-    //                      snapshot.docs.forEach((doc) {
-      //                      print(doc.data()['Name']);
-        //                  });
-          //              }
-            //            );
-
-
+        print('el intualization b 1');
+        var postsInstance = FirebaseFirestore.instance.collection('Post');
+        var postsSnapshots = postsInstance.snapshots();
+        postsSnapshots.listen((snapshot) {
+          snapshot.docs.forEach((doc) {
+            print(doc.data()['Name']);
+          });
+        });
 
         return const LoginScreen();
       }
     } else if (_error) {
-       print('el error b 1');
+      print('el error b 1');
       return const Text('Error');
       
     } else {
@@ -80,15 +77,11 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-        home:ShowAppropriateScreen(),
-     // initialRoute: '/',
-     routes: {
-       
-        '/HomeScreen': (dummyCtx)=> Home(),
-        '/SignUpScreen': (dummyCtx)=> SignUpScreen(),
-        '/LoginScreen': (dummyCtx)=> LoginScreen(),
-
-      },
+      home: newpostScreen(),
+      //initialRoute: '/',
+      //routes: {
+      //'/': (context) => Home(),
+      //},
     );
   }
 }
