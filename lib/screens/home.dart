@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tourism_dept_app/screens/login_screen.dart';
 import 'package:tourism_dept_app/widgets/categories.dart';
 import 'package:tourism_dept_app/widgets/post_card.dart';
 import 'package:tourism_dept_app/widgets/search_box.dart';
@@ -22,7 +24,11 @@ class Home extends StatelessWidget {
                   leading: Icon(Icons.logout_rounded),
                   title: Text('Logout'),
                   onTap: (){
-                    Navigator.of(context).pop();
+                    //Navigator.of(context).pop();
+                       FirebaseAuth.instance.signOut().then((value) {
+                            Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
+            });
                   },
                 ),
               )
@@ -55,7 +61,8 @@ class Home extends StatelessWidget {
                           snapshot.docs.forEach((doc) {
                             print(doc.data()['Name']);
                           });
-                        });
+                        }
+                        );
                       },
                     )),
                   )

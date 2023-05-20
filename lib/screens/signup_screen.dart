@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:tourism_dept_app/screens/home.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -13,6 +16,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _userNameTextController = TextEditingController();
+  TextEditingController _confirmpasswordTextController =
+      TextEditingController();
+  late UserCredential authResult;
+
+  final authenticationInstance = FirebaseAuth.instance;
+ 
 
   TextField reusableTextField(String text, IconData icon, bool isPasswordType,
       TextEditingController controller) {
@@ -90,11 +99,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           height: MediaQuery.of(context).size.height,
           decoration: const BoxDecoration(
               gradient: LinearGradient(colors: [
-
-                Color(0x6621a5ff),
-                Color(0x9921a5ff),
-                Color(0xcc21a5ff),
-                Color(0xff21a5ff),
+            Color(0x6621a5ff),
+            Color(0x9921a5ff),
+            Color(0xcc21a5ff),
+            Color(0xff21a5ff),
           ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
           child: SingleChildScrollView(
               child: Padding(
@@ -119,19 +127,60 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                firebaseUIButton(context, "Sign Up", () {
-            /*      FirebaseAuth.instance
-                      .createUserWithEmailAndPassword(
-                          email: _emailTextController.text,
-                          password: _passwordTextController.text)
-                      .then((value) {
-                    print("Created New Account");
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
-                  }).onError((error, stackTrace) {
-                    print("Error ${error.toString()}");
-                  });
-           */     })
+                reusableTextField("Confirm Password", Icons.lock_outlined, true,
+                    _confirmpasswordTextController),
+                const SizedBox(
+                  height: 20,
+                ),
+                firebaseUIButton(context, "Sign Up", () async {
+                  if (_passwordTextController.text.length < 6) {
+                    final snackBar = SnackBar(
+                      content:
+                          Text('Password must be at least 6 charachters long'),
+                      backgroundColor: Colors.red,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else if (_confirmpasswordTextController.text !=
+                      _passwordTextController.text) {
+                    final snackBar = SnackBar(
+                      content: Text('Confirm passwork doesn\'t match password'),
+                      backgroundColor: Colors.red,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else if (_confirmpasswordTextController.text ==
+                      _passwordTextController.text) {
+                    try {
+                      authResult = await authenticationInstance
+                          .createUserWithEmailAndPassword(
+                              email: _emailTextController.text,
+                              password: _passwordTextController.text);
+
+                      await FirebaseFirestore.instance
+                          .collection('Users')
+                          .doc(authResult.user!.uid)
+                          .set({
+                        'userId': authResult.user!.uid,
+                        'username': _userNameTextController.text,
+                        'email': _emailTextController.text,
+                      });
+                         final snackBar = SnackBar(
+                      content: Text('You have signed up successfully'),
+                      backgroundColor: Colors.white,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                             Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Home()));
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == "email-already-in-use") {
+                        final snackBar = SnackBar(
+                          content: Text('Email is already in use'),
+                          backgroundColor: Colors.red,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    }
+                  }
+                })
               ],
             ),
           ))),

@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tourism_dept_app/screens/home.dart';
 import 'package:tourism_dept_app/screens/signup_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -135,6 +138,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   @override
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  final authenticationInstance = FirebaseAuth.instance;
+  late UserCredential authResult;
+
   Widget BuildEmail() {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       const Text('Email',
@@ -153,7 +161,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
             ]),
         height: 60,
-        child: const TextField(
+        child: TextField(
+          controller: emailController,
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.black, fontSize: 25),
           decoration: InputDecoration(
@@ -185,7 +194,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
             ]),
         height: 60,
-        child: const TextField(
+        child: TextField(
+          controller: passwordController,
           obscureText: true,
           style: TextStyle(color: Colors.black, fontSize: 25),
           decoration: InputDecoration(
@@ -216,7 +226,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget buildSignupBtn() {
     return GestureDetector(
-        onTap: () => print('Sign up button was pressed'),
+        onTap: () {
+                Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SignUpScreen()));
+        },
         child: RichText(
           text: const TextSpan(
             children: [
@@ -241,30 +254,39 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
-Widget buildLoginBtn() {
-  return Container(
-      padding: const EdgeInsets.symmetric(),
-      width: double.infinity,
-      height: 40,
-      child: ElevatedButton(
-        onPressed: () {Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const SignUpScreen()));},
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            onPrimary: Colors.blue,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            textStyle: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            )),
-        child: const Text('LOGIN'),
-      ));
-}
+  Widget buildLoginBtn() {
+    return Container(
+        padding: const EdgeInsets.symmetric(),
+        width: double.infinity,
+        height: 40,
+        child: ElevatedButton(
+          onPressed: () async {
+            //   Navigator.push(context,  MaterialPageRoute(builder: (context) => const SignUpScreen()));
+            // FirebaseFirestore.instance.collection('Post').add({'text': 'hi', 'userId': 'mghantous'}).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+            authenticationInstance
+                .signInWithEmailAndPassword(
+              email: emailController.text,
+              password: passwordController.text,
+            )
+                .then((value) {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Home()));
+            });
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              onPrimary: Colors.blue,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              textStyle: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              )),
+          child: const Text('LOGIN'),
+        ));
+  }
 
-Widget build(BuildContext context) {
-   TextEditingController _passwordTextController = TextEditingController();
-  TextEditingController _emailTextController = TextEditingController();
+  Widget build(BuildContext context) {
     return Scaffold(
         body: GestureDetector(
             child: Stack(
