@@ -24,16 +24,13 @@ class _MyAppState extends State<MyApp> {
   //
   void intializeflutterfire() async {
     try {
-
-     await Firebase.initializeApp();
+      await Firebase.initializeApp();
       print('awel khatwa ');
       setState(() {
         _intialized = true;
       });
       print('el intialization et3ayare = 1');
-      }
-     catch (e) {
-
+    } catch (e) {
       setState(() {
         print('el intialization et3ayare = 0');
         _error = true;
@@ -64,7 +61,6 @@ class _MyAppState extends State<MyApp> {
     } else if (_error) {
       print('el error b 1');
       return const Text('Error');
-      
     } else {
       return LoadingScreen();
     }
@@ -77,7 +73,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: newpostScreen(),
+      home: NewPostScreen(),
       //initialRoute: '/',
       //routes: {
       //'/': (context) => Home(),
