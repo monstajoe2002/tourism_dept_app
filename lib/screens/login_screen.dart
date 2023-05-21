@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tourism_dept_app/screens/home.dart';
 import 'package:tourism_dept_app/screens/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -227,8 +228,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget buildSignupBtn() {
     return GestureDetector(
         onTap: () {
-                Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignUpScreen()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => SignUpScreen()));
         },
         child: RichText(
           text: const TextSpan(
@@ -254,6 +255,28 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
+  Widget buildSignuptext() {
+    return GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Home()));
+        },
+        child: RichText(
+          text: const TextSpan(
+            children: [
+              TextSpan(
+                text: 'Continue As Guest',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
+          ),
+        ));
+  }
+
   Widget buildLoginBtn() {
     return Container(
         padding: const EdgeInsets.symmetric(),
@@ -263,15 +286,41 @@ class _LoginScreenState extends State<LoginScreen> {
           onPressed: () async {
             //   Navigator.push(context,  MaterialPageRoute(builder: (context) => const SignUpScreen()));
             // FirebaseFirestore.instance.collection('Post').add({'text': 'hi', 'userId': 'mghantous'}).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
-            authenticationInstance
-                .signInWithEmailAndPassword(
+            /*  authenticationInstance.signInWithEmailAndPassword(
               email: emailController.text,
               password: passwordController.text,
-            )
-                .then((value) {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Home()));
-            });
+            ) .then((value) {
+               Navigator.push(
+                   context, MaterialPageRoute(builder: (context) => Home()));
+              })*/
+            try {
+            await  authenticationInstance
+                  .signInWithEmailAndPassword(
+                email: emailController.text,
+                password: passwordController.text,
+              )
+                  .then((value) {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Home()));
+              });
+            } on FirebaseAuthException catch (e) {
+              if(e.code=='invalid-email'){
+                final snackBar = SnackBar(
+                          content: Text('The email is wrongly formatted'),
+                          backgroundColor: Colors.red,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  print(e.code);}
+    else if(e.code=='user-not-found'){
+        final snackBar = SnackBar(
+                          content: Text('User Not Found. Kindly re-enter your email and password .'),
+                          backgroundColor: Colors.red,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+              
+            }
           },
           style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
@@ -283,6 +332,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 fontWeight: FontWeight.bold,
               )),
           child: const Text('LOGIN'),
+        ));
+  }
+
+  Widget continue_as_guestbutton() {
+    return Container(
+        padding: const EdgeInsets.symmetric(),
+        width: double.infinity,
+        height: 40,
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Home()));
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              onPrimary: Colors.blue,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              textStyle: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              )),
+          child: const Text('Continue As a Guest'),
         ));
   }
 
@@ -322,7 +394,18 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 40),
               buildLoginBtn(),
               const SizedBox(height: 10),
-              buildSignupBtn()
+              buildSignupBtn(),
+              const SizedBox(
+                height: 30,
+              ),
+              //const Text('OR',
+              //  style: TextStyle(
+              //    color: Colors.white,
+              //  fontSize: 20,
+              //fontWeight: FontWeight.bold)),
+              //const SizedBox(height:20),
+              // continue_as_guestbutton()
+              buildSignuptext()
             ]),
           ),
         )

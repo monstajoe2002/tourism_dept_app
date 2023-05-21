@@ -14,21 +14,30 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var user = FirebaseAuth.instance.currentUser;
     return Scaffold(
         appBar: AppBar(),
         drawer: Drawer(
           child: ListView(
-            children:  [
+            children: [
               InkWell(
                 child: ListTile(
                   leading: Icon(Icons.logout_rounded),
-                  title: Text('Logout'),
-                  onTap: (){
-                    //Navigator.of(context).pop();
-                       FirebaseAuth.instance.signOut().then((value) {
-                            Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
-            });
+                  title: Text(user == null ? 'log in' : 'log out'),
+                  onTap: () {
+                    if (user != null) {
+                      FirebaseAuth.instance.signOut().then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                      });
+                    } else {
+                         Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                    }
                   },
                 ),
               )
@@ -61,8 +70,7 @@ class Home extends StatelessWidget {
                           snapshot.docs.forEach((doc) {
                             print(doc.data()['Name']);
                           });
-                        }
-                        );
+                        });
                       },
                     )),
                   )
