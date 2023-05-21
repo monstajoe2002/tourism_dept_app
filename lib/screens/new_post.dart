@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tourism_dept_app/screens/home.dart'; // Import the Home class
 
 class NewPostScreen extends StatefulWidget {
   const NewPostScreen({Key? key}) : super(key: key);
@@ -18,6 +17,10 @@ class _NewPostScreenState extends State<NewPostScreen> {
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _recommendationController =
+      TextEditingController();
+
   String? description;
   String? recommendation;
   File? _selectedImage;
@@ -41,8 +44,42 @@ class _NewPostScreenState extends State<NewPostScreen> {
         'description': description,
         'recommendation': recommendation,
       });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Success'),
+            content: Text('Post created successfully!'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
       print('Post created successfully!');
     } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to create post. Please try again.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
       print('Error creating post: $e');
       // Handle the error and show an error message to the user
     }
@@ -72,6 +109,9 @@ class _NewPostScreenState extends State<NewPostScreen> {
     });
     _nameController.clear();
     _locationController.clear();
+    _locationController.clear();
+    _descriptionController.clear(); // Clear the description text controller
+    _recommendationController.clear(); // Clear the recommendation text c
   }
 
   @override
@@ -83,7 +123,12 @@ class _NewPostScreenState extends State<NewPostScreen> {
           backgroundColor: Colors.white,
           leading: GestureDetector(
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Home(), // Navigate to Home class
+                ),
+              );
             },
             child: Container(
               decoration: BoxDecoration(
@@ -246,6 +291,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                   ),
                   SizedBox(height: 10.0),
                   TextFormField(
+                    controller: _descriptionController,
                     onChanged: (value) {
                       description = value;
                     },
@@ -271,6 +317,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                   ),
                   SizedBox(height: 10.0),
                   TextFormField(
+                    controller: _recommendationController,
                     onChanged: (value) {
                       recommendation = value;
                     },
@@ -292,7 +339,6 @@ class _NewPostScreenState extends State<NewPostScreen> {
                       _selectedType == null ||
                       description == null ||
                       recommendation == null) {
-                    // Display an error message to the user if any field is empty
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -331,6 +377,9 @@ class _NewPostScreenState extends State<NewPostScreen> {
     );
   }
 }
+
+
+
 
 
 
