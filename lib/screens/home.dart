@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tourism_dept_app/screens/loading_screen.dart';
 import 'package:tourism_dept_app/screens/login_screen.dart';
 import 'package:tourism_dept_app/widgets/categories.dart';
 import 'package:tourism_dept_app/widgets/post_card.dart';
@@ -11,24 +11,27 @@ import '../widgets/bottom_bar.dart';
 
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    var postsInstance = FirebaseFirestore.instance.collection('posts');
+    var stream = postsInstance.snapshots();
     return Scaffold(
         appBar: AppBar(),
         drawer: Drawer(
           child: ListView(
-            children:  [
+            children: [
               InkWell(
                 child: ListTile(
-                  leading: Icon(Icons.logout_rounded),
-                  title: Text('Logout'),
-                  onTap: (){
+                  leading: const Icon(Icons.logout_rounded),
+                  title: const Text('Logout'),
+                  onTap: () {
                     //Navigator.of(context).pop();
-                       FirebaseAuth.instance.signOut().then((value) {
-                            Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
-            });
+                    FirebaseAuth.instance.signOut().then((value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()));
+                    });
                   },
                 ),
               )
@@ -51,18 +54,24 @@ class Home extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 30),
                     child: Center(
-                        child: GestureDetector(
-                      child: const PostCard(),
-                      onTap: () {
-                        var postsInstance =
-                            FirebaseFirestore.instance.collection('Post');
-                        var postsSnapshots = postsInstance.snapshots();
-                        postsSnapshots.listen((snapshot) {
-                          snapshot.docs.forEach((doc) {
-                            print(doc.data()['Name']);
-                          });
+                        child: StreamBuilder<QuerySnapshot>(
+                      stream: stream,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return LoadingScreen();
                         }
-                        );
+                        var posts = snapshot.data!.docs;
+                        return ListView.builder(
+                            itemBuilder: (context, index) {
+                              var document = posts[index].data() as Map;
+                              return PostCard(
+                                  title: document['name'],
+                                  location: document['location'],
+                                  imageUrl: document['imageUrl'],
+                                  category: document['type']);
+                            },
+                            itemCount: posts.length);
                       },
                     )),
                   )

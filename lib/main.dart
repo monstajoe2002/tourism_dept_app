@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tourism_dept_app/screens/loading_screen.dart';
 import 'package:tourism_dept_app/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tourism_dept_app/screens/login_screen.dart';
-import 'package:tourism_dept_app/screens/new_post.dart';
 
 //import 'screens/login_screen.dart';
 //import 'screens/signup_screen.dart';
@@ -24,16 +23,13 @@ class _MyAppState extends State<MyApp> {
   //
   void intializeflutterfire() async {
     try {
-
-     await Firebase.initializeApp();
+      await Firebase.initializeApp();
       print('awel khatwa ');
       setState(() {
         _intialized = true;
       });
       print('el intialization et3ayare = 1');
-      }
-     catch (e) {
-
+    } catch (e) {
       setState(() {
         print('el intialization et3ayare = 0');
         _error = true;
@@ -50,21 +46,20 @@ class _MyAppState extends State<MyApp> {
   Widget ShowAppropriateScreen() {
     if (_intialized) {
       {
-        print('el intualization b 1');
-        var postsInstance = FirebaseFirestore.instance.collection('Post');
-        var postsSnapshots = postsInstance.snapshots();
-        postsSnapshots.listen((snapshot) {
-          snapshot.docs.forEach((doc) {
-            print(doc.data()['Name']);
-          });
-        });
+        //return const LoginScreen();
 
-        return const LoginScreen();
+        var user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          print('user authenticated fl main');
+          return Home();
+        } else {
+          print('user is not authenticated fl main');
+          return const LoginScreen();
+        }
       }
     } else if (_error) {
       print('el error b 1');
       return const Text('Error');
-      
     } else {
       return LoadingScreen();
     }
@@ -77,11 +72,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: newpostScreen(),
-      //initialRoute: '/',
-      //routes: {
-      //'/': (context) => Home(),
-      //},
+      home: ShowAppropriateScreen(),
     );
   }
 }

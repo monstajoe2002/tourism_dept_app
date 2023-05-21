@@ -2,7 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class PostCard extends StatefulWidget {
-  const PostCard({Key? key}) : super(key: key);
+  String title;
+  String location;
+  String imageUrl;
+  String category;
+  double? rating;
+  PostCard({
+    Key? key,
+    required this.title,
+    required this.location,
+    required this.imageUrl,
+    required this.category,
+    this.rating,
+  }) : super(key: key);
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -32,10 +44,13 @@ class _PostCardState extends State<PostCard> {
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.grey.shade400, width: 2.0),
           ),
+          margin: const EdgeInsets.only(bottom: 30),
           child: Column(children: [
-            const Placeholder(
-              fallbackHeight: 235,
-              fallbackWidth: 256,
+            Image.network(
+              widget.imageUrl,
+              fit: BoxFit.cover,
+              width: 260,
+              height: 200,
             ),
             Container(
               padding: const EdgeInsets.all(20),
@@ -46,14 +61,14 @@ class _PostCardState extends State<PostCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'National Museum',
-                        style: TextStyle(fontWeight: FontWeight.w500),
+                        widget.title,
+                        style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Row(
                         children: [
-                          Icon(Icons.pin_drop),
-                          Text('Cairo'),
+                          const Icon(Icons.pin_drop),
+                          Text(widget.location),
                         ],
                       ),
                     ],
