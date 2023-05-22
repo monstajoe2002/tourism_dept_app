@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,9 +8,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tourism_dept_app/screens/home.dart'; // Import the Home class
 
 class newpostScreen extends StatefulWidget {
   const newpostScreen({super.key});
@@ -25,6 +25,10 @@ class _newpostScreenState extends State<newpostScreen> {
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _recommendationController =
+      TextEditingController();
+
   String? description;
   String? recommendation;
   File? _selectedImage;
@@ -48,10 +52,73 @@ class _newpostScreenState extends State<newpostScreen> {
         'description': description,
         'recommendation': recommendation,
       });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Success'),
+            content: Text('Post created successfully!'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
       print('Post created successfully!');
     } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to create post. Please try again.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
       print('Error creating post: $e');
     }
+  }
+
+  Future<String> _uploadImageToFirebaseStorage(File image) async {
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference reference = storage.ref().child('images/$fileName');
+      UploadTask uploadTask = reference.putFile(image);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
+      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading image to Firebase Storage: $e');
+      throw Exception('Failed to upload image.');
+    }
+  }
+
+  void _resetFields() {
+    setState(() {
+      _selectedType = null;
+      description = null;
+      recommendation = null;
+      _selectedImage = null;
+    });
+    _nameController.clear();
+    _locationController.clear();
+    _locationController.clear();
+    _descriptionController.clear(); // Clear the description text controller
+    _recommendationController.clear(); // Clear the recommendation text c
   }
 
   @override
@@ -63,7 +130,12 @@ class _newpostScreenState extends State<newpostScreen> {
           backgroundColor: Colors.white,
           leading: GestureDetector(
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Home(), // Navigate to Home class
+                ),
+              );
             },
             child: Container(
               decoration: BoxDecoration(
@@ -219,10 +291,8 @@ class _newpostScreenState extends State<newpostScreen> {
                     ),
                   ),
                   SizedBox(height: 10.0),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
+                  TextFormField(
+                    controller: _descriptionController,
                     onChanged: (value) {
                       description = value;
                     },
@@ -241,29 +311,42 @@ class _newpostScreenState extends State<newpostScreen> {
                     ),
                   ),
                   SizedBox(height: 10.0),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
+                  TextFormField(
+                    controller: _recommendationController,
                     onChanged: (value) {
                       recommendation = value;
                     },
                   ),
                 ],
               ),
-              SizedBox(height: 20.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      String name = _nameController.text;
-                      String location = _locationController.text;
-                      String imageUrl =
-                          _selectedImage != null ? _selectedImage!.path : '';
-                      String type = _selectedType ?? '';
-                      String description = this.description ?? '';
-                      String recommendation = this.recommendation ?? '';
+              SizedBox(height: 40.0),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_nameController.text.isEmpty ||
+                      _locationController.text.isEmpty ||
+                      _selectedImage == null ||
+                      _selectedType == null ||
+                      description == null ||
+                      recommendation == null) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Error'),
+                          content: Text('Please fill in all fields.'),
+                          actions: [
+                            TextButton(
+                              child: Text('OK'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                    return;
+                  }
 
                       _createPost(name, location, imageUrl, type, description,
                           recommendation);
@@ -302,6 +385,9 @@ class _newpostScreenState extends State<newpostScreen> {
   }
 }
   
+
+
+
 
 
 /*
