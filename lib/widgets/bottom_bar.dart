@@ -53,7 +53,7 @@ class _BottomBarState extends State<BottomBar> {
       print(user);
 
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const newpostScreen()));
+          MaterialPageRoute(builder: (context) => const NewPostScreen()));
     }
   }
 

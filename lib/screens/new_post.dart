@@ -1,20 +1,28 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:tourism_dept_app/screens/home.dart'; // Import the Home class
 
-class newpostScreen extends StatefulWidget {
-  const newpostScreen({super.key});
+class NewPostScreen extends StatefulWidget {
+  const NewPostScreen({Key? key}) : super(key: key);
 
   @override
-  State<newpostScreen> createState() => _newpostScreenState();
+  State<NewPostScreen> createState() => _NewPostScreenState();
 }
 
-class _newpostScreenState extends State<newpostScreen> {
+class _NewPostScreenState extends State<NewPostScreen> {
   final List<String> typeOptions = ['Restaurant', 'Museum', 'Wonder'];
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _recommendationController =
+      TextEditingController();
+
   String? description;
   String? recommendation;
   File? _selectedImage;
@@ -25,8 +33,8 @@ class _newpostScreenState extends State<newpostScreen> {
     return image;
   }
 
-  void _createPost(String name, String location, String imageUrl, String type,
-      String description, String recommendation) async {
+  Future<void> _createPost(String name, String location, String imageUrl,
+      String type, String description, String recommendation) async {
     try {
       CollectionReference posts =
           FirebaseFirestore.instance.collection('posts');
@@ -38,10 +46,73 @@ class _newpostScreenState extends State<newpostScreen> {
         'description': description,
         'recommendation': recommendation,
       });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Success'),
+            content: Text('Post created successfully!'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
       print('Post created successfully!');
     } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to create post. Please try again.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
       print('Error creating post: $e');
+      // Handle the error and show an error message to the user
     }
+  }
+
+  Future<String> _uploadImageToFirebaseStorage(File image) async {
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference reference = storage.ref().child('images/$fileName');
+      UploadTask uploadTask = reference.putFile(image);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
+      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading image to Firebase Storage: $e');
+      throw Exception('Failed to upload image.');
+    }
+  }
+
+  void _resetFields() {
+    setState(() {
+      _selectedType = null;
+      description = null;
+      recommendation = null;
+      _selectedImage = null;
+    });
+    _nameController.clear();
+    _locationController.clear();
+    _descriptionController.clear();
+    _recommendationController.clear();
   }
 
   @override
@@ -53,7 +124,11 @@ class _newpostScreenState extends State<newpostScreen> {
           backgroundColor: Colors.white,
           leading: GestureDetector(
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Home()), // Navigate to Home class
+              );
             },
             child: Container(
               decoration: BoxDecoration(
@@ -97,16 +172,17 @@ class _newpostScreenState extends State<newpostScreen> {
                   Text(
                     'Name',
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 10.0),
-                  TextField(
+                  TextFormField(
+                    controller: _nameController,
                     decoration: InputDecoration(
+                      hintText: 'Enter name',
                       border: OutlineInputBorder(),
                     ),
-                    controller: _nameController,
                   ),
                 ],
               ),
@@ -117,16 +193,17 @@ class _newpostScreenState extends State<newpostScreen> {
                   Text(
                     'Location',
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 10.0),
-                  TextField(
+                  TextFormField(
+                    controller: _locationController,
                     decoration: InputDecoration(
+                      hintText: 'Enter location',
                       border: OutlineInputBorder(),
                     ),
-                    controller: _locationController,
                   ),
                 ],
               ),
@@ -137,7 +214,7 @@ class _newpostScreenState extends State<newpostScreen> {
                   Text(
                     'Image',
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -145,9 +222,11 @@ class _newpostScreenState extends State<newpostScreen> {
                   GestureDetector(
                     onTap: () async {
                       XFile? image = await _getImageFromGallery();
-                      setState(() {
-                        _selectedImage = File(image!.path);
-                      });
+                      if (image != null) {
+                        setState(() {
+                          _selectedImage = File(image.path);
+                        });
+                      }
                     },
                     child: Container(
                       height: 200,
@@ -173,27 +252,29 @@ class _newpostScreenState extends State<newpostScreen> {
                   Text(
                     'Type',
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 10.0),
                   DropdownButtonFormField<String>(
-                    items: typeOptions.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
+                    value: _selectedType,
                     onChanged: (String? newValue) {
                       setState(() {
                         _selectedType = newValue;
                       });
                     },
+                    items: typeOptions
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
+                      isDense: true,
                     ),
-                    value: _selectedType,
                   ),
                 ],
               ),
@@ -204,18 +285,22 @@ class _newpostScreenState extends State<newpostScreen> {
                   Text(
                     'Description',
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 10.0),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
+                  TextFormField(
+                    controller: _descriptionController,
                     onChanged: (value) {
                       description = value;
                     },
+                    decoration: InputDecoration(
+                      hintText: 'Enter description',
+                      border: OutlineInputBorder(),
+                    ),
+                    minLines: 3,
+                    maxLines: 5,
                   ),
                 ],
               ),
@@ -226,64 +311,66 @@ class _newpostScreenState extends State<newpostScreen> {
                   Text(
                     'Recommendation',
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 10.0),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
+                  TextFormField(
+                    controller: _recommendationController,
                     onChanged: (value) {
                       recommendation = value;
                     },
+                    decoration: InputDecoration(
+                      hintText: 'Enter recommendation',
+                      border: OutlineInputBorder(),
+                    ),
+                    minLines: 3,
+                    maxLines: 5,
                   ),
                 ],
               ),
-              SizedBox(height: 20.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      String name = _nameController.text;
-                      String location = _locationController.text;
-                      String imageUrl =
-                          _selectedImage != null ? _selectedImage!.path : '';
-                      String type = _selectedType ?? '';
-                      String description = this.description ?? '';
-                      String recommendation = this.recommendation ?? '';
-
-                      _createPost(name, location, imageUrl, type, description,
-                          recommendation);
-                    },
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        String name = _nameController.text;
-                        String location = _locationController.text;
-                        String imageUrl =
-                            _selectedImage != null ? _selectedImage!.path : '';
-                        String type = _selectedType ?? '';
-                        String description = this.description ?? '';
-                        String recommendation = this.recommendation ?? '';
-
-                        _createPost(name, location, imageUrl, type, description,
-                            recommendation);
+              SizedBox(height: 40.0),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_nameController.text.isEmpty ||
+                      _locationController.text.isEmpty ||
+                      _selectedImage == null ||
+                      _selectedType == null ||
+                      description == null ||
+                      recommendation == null) {
+                    // Display an error message to the user if any field is empty
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Error'),
+                          content: Text('Please fill in all fields.'),
+                          actions: [
+                            TextButton(
+                              child: Text('OK'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
                       },
-                      icon: Icon(Icons.add),
-                      label: Text('Create'),
-                    ),
-                  ),
-                  CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              )
+                    );
+                    return;
+                  }
+
+                  String name = _nameController.text;
+                  String location = _locationController.text;
+                  String imageUrl =
+                      await _uploadImageToFirebaseStorage(_selectedImage!);
+                  String type = _selectedType!;
+                  _createPost(name, location, imageUrl, type, description!,
+                      recommendation!);
+                  _resetFields();
+                },
+                child: Text('Post'),
+              ),
             ],
           ),
         ),
