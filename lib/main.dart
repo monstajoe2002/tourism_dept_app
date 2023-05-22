@@ -48,17 +48,7 @@ class _MyAppState extends State<MyApp> {
   Widget ShowAppropriateScreen() {
     if (_intialized) {
       {
-        //return const LoginScreen();
-
-          var user = FirebaseAuth.instance.currentUser;
-          if (user != null) {
-            print('user authenticated fl main');
-            return Home();
-          } else {
-
-        print('user is not authenticated fl main');
         return const LoginScreen();
-        }
       }
     } else if (_error) {
       print('el error b 1');
@@ -71,13 +61,12 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Tourism App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ShowAppropriateScreen(),
-    );
-    /*       home: _intialized != true
+        title: 'Tourism App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        //home: ShowAppropriateScreen(),
+        home: _intialized != true
             ? LoadingScreen()
             : StreamBuilder(
                 stream: FirebaseAuth.instance.authStateChanges(),
@@ -87,14 +76,15 @@ class _MyAppState extends State<MyApp> {
                   }
                   if (userSnapshot.hasData) {
                     //the snapshot returned from the auth sdk has something inside means user is authenticated
-                    print('user authenticated fl main');
+                    print('user authenticated flz');
                     return Home();
-                        //    Navigator.push(context,
-                        //MaterialPageRoute(builder: (context) => Home()));
-
                   }
-                  print('user is not authenticated fl main');
                   return const LoginScreen();
-                }));*/
+                }));
+    //initialRoute: '/',
+    //routes: {
+    //'/': (context) => Home(),
+    //},
+    //  );
   }
 }
