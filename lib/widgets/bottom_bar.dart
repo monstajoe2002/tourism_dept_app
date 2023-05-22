@@ -1,12 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
-import 'package:tourism_dept_app/screens/home.dart';
 import 'package:tourism_dept_app/screens/new_post.dart';
-import 'package:get/get.dart';
 
 import '../screens/login_screen.dart';
 
@@ -42,21 +39,21 @@ class _BottomBarState extends State<BottomBar> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                              builder: (context) => const LoginScreen()));
                     },
                     child: const Text('Sign In'))
               ],
-              title: Text('Sign In'),
-              content: Text('Sign In to Post , Comment and Review'),
-              titlePadding: EdgeInsets.only(top: 20, left: 20),
-              contentPadding: EdgeInsets.all(20),
+              title: const Text('Sign In'),
+              content: const Text('Sign In to Post , Comment and Review'),
+              titlePadding: const EdgeInsets.only(top: 20, left: 20),
+              contentPadding: const EdgeInsets.all(20),
             );
           });
     } else if (_selectedIndex == 1 && user != null) {
       print(user);
 
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => newpostScreen()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const newpostScreen()));
     }
   }
 
