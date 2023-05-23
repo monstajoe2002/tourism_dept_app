@@ -23,8 +23,12 @@ class Home extends StatelessWidget {
             children: [
               InkWell(
                 child: ListTile(
-                  leading: const Icon(Icons.logout_rounded),
-                  title: const Text('Logout'),
+                  leading: (user == null)
+                      ? const Icon(Icons.login_rounded)
+                      : const Icon(Icons.logout_rounded),
+                  title: (user == null)
+                      ? const Text('Log In / Sign Up')
+                      : const Text('Log Out'),
                   onTap: () {
                     if (user != null) {
                       FirebaseAuth.instance.signOut().then((value) {
@@ -61,7 +65,7 @@ class Home extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 30),
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height, 
+                      height: MediaQuery.of(context).size.height,
                       child: Center(
                           child: StreamBuilder<QuerySnapshot>(
                         stream: stream,
