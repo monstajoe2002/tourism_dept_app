@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -15,6 +16,8 @@ class NewPostScreen extends StatefulWidget {
 }
 
 class _NewPostScreenState extends State<NewPostScreen> {
+    var user_id = FirebaseAuth.instance.currentUser?.uid;
+ 
   final List<String> typeOptions = ['Restaurant', 'Museum', 'Wonder'];
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _nameController = TextEditingController();
@@ -39,12 +42,14 @@ class _NewPostScreenState extends State<NewPostScreen> {
       CollectionReference posts =
           FirebaseFirestore.instance.collection('posts');
       await posts.add({
+        'user_Id':user_id,
         'name': name,
         'location': location,
         'imageUrl': imageUrl,
         'type': type,
         'description': description,
         'recommendation': recommendation,
+        'rating':0
       });
       showDialog(
         context: context,
@@ -57,6 +62,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 child: Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
+                  
                 },
               ),
             ],
