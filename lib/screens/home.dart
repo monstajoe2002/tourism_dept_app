@@ -10,6 +10,7 @@ import 'package:tourism_dept_app/widgets/search_box.dart';
 import '../widgets/bottom_bar.dart';
 
 class Home extends StatelessWidget {
+  var user = FirebaseAuth.instance.currentUser;
   Home({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -25,13 +26,19 @@ class Home extends StatelessWidget {
                   leading: const Icon(Icons.logout_rounded),
                   title: const Text('Logout'),
                   onTap: () {
-                    //Navigator.of(context).pop();
-                    FirebaseAuth.instance.signOut().then((value) {
+                    if (user != null) {
+                      FirebaseAuth.instance.signOut().then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                      });
+                    } else {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LoginScreen()));
-                    });
+                              builder: (context) => LoginScreen()));
+                    }
                   },
                 ),
               )
@@ -53,27 +60,35 @@ class Home extends StatelessWidget {
                   const Categories(),
                   Container(
                     margin: const EdgeInsets.only(top: 30),
-                    child: Center(
-                        child: StreamBuilder<QuerySnapshot>(
-                      stream: stream,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return LoadingScreen();
-                        }
-                        var posts = snapshot.data!.docs;
-                        return ListView.builder(
-                            itemBuilder: (context, index) {
-                              var document = posts[index].data() as Map;
-                              return PostCard(
-                                  title: document['name'],
-                                  location: document['location'],
-                                  imageUrl: document['imageUrl'],
-                                  category: document['type']);
-                            },
-                            itemCount: posts.length);
-                      },
-                    )),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height - // total height
+                          kToolbarHeight - // top AppBar height
+                          kBottomNavigationBarHeight,
+                      child: Center(
+                          child: StreamBuilder<QuerySnapshot>(
+                        stream: stream,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return LoadingScreen();
+                          }
+                          if (!snapshot.hasData) {
+                            return LoadingScreen();
+                          }
+                          var posts = snapshot.data!.docs;
+                          return ListView.builder(
+                              itemBuilder: (context, index) {
+                                var document = posts[index].data() as Map;
+                                return PostCard(
+                                    title: document['name'],
+                                    location: document['location'],
+                                    imageUrl: document['imageUrl'],
+                                    category: document['type']);
+                              },
+                              itemCount: posts.length);
+                        },
+                      )),
+                    ),
                   )
                 ],
               )),
