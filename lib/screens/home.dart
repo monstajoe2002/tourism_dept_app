@@ -61,9 +61,7 @@ class Home extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 30),
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height - // total height
-                          kToolbarHeight - // top AppBar height
-                          kBottomNavigationBarHeight,
+                      height: MediaQuery.of(context).size.height, 
                       child: Center(
                           child: StreamBuilder<QuerySnapshot>(
                         stream: stream,
