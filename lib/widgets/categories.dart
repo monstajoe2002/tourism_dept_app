@@ -10,10 +10,21 @@ class Categories extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Container(
         margin: const EdgeInsets.only(top: 16),
-        child: const GroupButton(
+        child: GroupButton(
           isRadio: true,
-          buttons: ["All", "Restaurants", "Museums", "Hotels", "Parks"],
-          options: GroupButtonOptions(
+          buttons: const [
+            "All",
+            "Restaurants",
+            "Museums",
+            "Hotels",
+            "Parks",
+            "Wonder"
+          ],
+          onSelected: (value, index, isSelected) {
+            Navigator.pushNamed(context, '/filteredPosts',
+                arguments: {'categoryFilter': value, 'searchParam': ""});
+          },
+          options: const GroupButtonOptions(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               selectedBorderColor: Colors.blueGrey,
               unselectedBorderColor: Colors.blueGrey,

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tourism_dept_app/screens/filtered_posts_screen.dart';
 import 'package:tourism_dept_app/screens/loading_screen.dart';
 import 'package:tourism_dept_app/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -73,6 +74,9 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home: ShowAppropriateScreen(),
+      routes: {
+        '/filteredPosts': (context) => FilteredPostsScreen(),
+      },
     );
   }
 }
