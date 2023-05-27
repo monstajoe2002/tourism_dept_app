@@ -178,6 +178,52 @@ class _Details_ScreenState extends State<Details_Screen> {
                       SizedBox(
                         height: 8,
                       ),
+                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                             Text('Type',
+                            style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold))
+                     ,
+                        Text(averagedoc["type"],
+                            style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold))
+                      ]),
+                                               const Divider(
+            height: 20,
+            thickness: 5,
+            indent: 20,
+            endIndent: 0,
+            color: Colors.black,
+          )
+                      ,
+                      
+                      
+                   Text(
+                          "Recommendation ",
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ), SizedBox(
+                        height: 8,
+                      ),
+
+                      Text(averagedoc["recommendation"]
+                          ,
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black),
+                        ),
+                         const Divider(
+            height: 20,
+            thickness: 5,
+            indent: 20,
+            endIndent: 0,
+            color: Colors.black,
+          )
+                        , SizedBox(
+                        height: 12,
+                      ),
                       Row(children: [
                         Text(
                           "Comments ",
@@ -243,17 +289,17 @@ class _Details_ScreenState extends State<Details_Screen> {
                                         fontWeight: FontWeight.normal,
                                         color: Color.fromARGB(255, 26, 25, 25)),
                                   ),
-                                  trailing: IconButton(
-                                    iconSize: 50,
-                                    onPressed: () {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                              SnackBar(content: Text('Icon ')));
-                                    },
-                                    icon: Icon(
-                                      Icons.delete,
-                                    ),
-                                  ),
+                                  // trailing: IconButton(
+                                  //   iconSize: 50,
+                                  //   onPressed: () {
+                                  //     ScaffoldMessenger.of(context)
+                                  //         .showSnackBar(
+                                  //             SnackBar(content: Text('Icon ')));
+                                  //   },
+                                  //   icon: Icon(
+                                  //     Icons.delete,
+                                  //   ),
+                                  // ),
                                 ),
                               );
                             },
@@ -269,6 +315,45 @@ class _Details_ScreenState extends State<Details_Screen> {
                                 color: Colors.amber,
                                 size: 20),
                             onRatingUpdate: (value) async {
+                              if(user == null ){
+
+  showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('cancel')),
+                                      TextButton(
+                                          onPressed: () {
+                                            print('dakhal el login');
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const LoginScreen()));
+                                          },
+                                          child: const Text('Sign In'))
+                                    ],
+                                    title: const Text('Sign In'),
+                                    content: const Text(
+                                        'Sign In to Post , Comment and Review'),
+                                    titlePadding: const EdgeInsets.only(
+                                        top: 20, left: 20),
+                                    contentPadding: const EdgeInsets.all(20),
+                                  );
+                                });
+
+
+
+
+
+
+                              }
+                              else{
                               print('value put');
                               print(value);
                               // Here I add the rating record
@@ -312,6 +397,10 @@ class _Details_ScreenState extends State<Details_Screen> {
                                 print(number_of_documents);
                               }).catchError((error) =>
                                   print("Failed to add rating: $error"));
+                            
+                            
+                            
+                            }
                             }),
                       ),
                       ElevatedButton(

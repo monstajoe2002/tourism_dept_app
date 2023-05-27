@@ -24,31 +24,62 @@ class Home extends StatelessWidget {
               InkWell(
                 child: ListTile(
                   leading: const Icon(Icons.logout_rounded),
-                  title: const Text('Logout'),
-                  onTap: () {
-                    if (user != null) {
-                      FirebaseAuth.instance.signOut().then((value) {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => LoginScreen()));
+                  title:  Text(user!=null?'Logout':'Sign In'),
 
-                        Navigator.pushAndRemoveUntil<dynamic>(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) => LoginScreen(),
-                          ),
-                          (route) =>
-                              false, //if you want to disable back feature set to false
-                        );
+onTap: () {
+      if (user != null) {
+                      FirebaseAuth.instance.signOut().then((value) {
+
+Navigator.pushAndRemoveUntil<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => LoginScreen(),
+        ),
+        (route) => false,//if you want to disable back feature set to false
+);
+
                       });
                     } else {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                         Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
                     }
+
+
                   },
+
+
+
+
+
+
+                  // onTap: () {
+
+                    
+                  //   if (user != null) {
+                  //     FirebaseAuth.instance.signOut().then((value) {
+                  //       // Navigator.push(
+                  //       //     context,
+                  //       //     MaterialPageRoute(
+                  //       //         builder: (context) => LoginScreen()));
+
+                  //       Navigator.pushAndRemoveUntil<dynamic>(
+                  //         context,
+                  //         MaterialPageRoute<dynamic>(
+                  //           builder: (BuildContext context) => LoginScreen(),
+                  //         ),
+                  //         (route) =>
+                  //             false, //if you want to disable back feature set to false
+                  //       );
+                  //     });
+                  //   } else {
+                  //     Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => LoginScreen()));
+                  //   }
+                  // },
                 ),
               )
             ],
