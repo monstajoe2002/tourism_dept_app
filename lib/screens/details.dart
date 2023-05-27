@@ -47,7 +47,7 @@ class _Details_ScreenState extends State<Details_Screen> {
         context: ctx,
         builder: (sheetContext) {
           print('show modal');
-          return NewExWidget(callBackFunc: addNewExpense,post_id:post_id_);
+          return NewExWidget(callBackFunc: addNewExpense, post_id: post_id_);
         });
   }
 
@@ -67,7 +67,6 @@ class _Details_ScreenState extends State<Details_Screen> {
 
   Widget build(BuildContext context) {
     final post_id_ = ModalRoute.of(context)!.settings.arguments;
-   
 
     var commentsInstance = FirebaseFirestore.instance
         .collection('posts')
@@ -178,50 +177,52 @@ class _Details_ScreenState extends State<Details_Screen> {
                       SizedBox(
                         height: 8,
                       ),
-                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                             Text('Type',
-                            style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold))
-                     ,
-                        Text(averagedoc["type"],
-                            style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold))
-                      ]),
-                                               const Divider(
-            height: 20,
-            thickness: 5,
-            indent: 20,
-            endIndent: 0,
-            color: Colors.black,
-          )
-                      ,
-                      
-                      
-                   Text(
-                          "Recommendation ",
-                          style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ), SizedBox(
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text('Type',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                            Text(averagedoc["type"],
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold))
+                          ]),
+                      const Divider(
+                        height: 20,
+                        thickness: 5,
+                        indent: 20,
+                        endIndent: 0,
+                        color: Colors.black,
+                      ),
+                      Text(
+                        "Recommendation ",
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                      SizedBox(
                         height: 8,
                       ),
-
-                      Text(averagedoc["recommendation"]
-                          ,
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.black),
-                        ),
-                         const Divider(
-            height: 20,
-            thickness: 5,
-            indent: 20,
-            endIndent: 0,
-            color: Colors.black,
-          )
-                        , SizedBox(
+                      Text(
+                        averagedoc["recommendation"],
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black),
+                      ),
+                      const Divider(
+                        height: 20,
+                        thickness: 5,
+                        indent: 20,
+                        endIndent: 0,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
                         height: 12,
                       ),
                       Row(children: [
@@ -315,92 +316,84 @@ class _Details_ScreenState extends State<Details_Screen> {
                                 color: Colors.amber,
                                 size: 20),
                             onRatingUpdate: (value) async {
-                              if(user == null ){
+                              if (user == null) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('cancel')),
+                                          TextButton(
+                                              onPressed: () {
+                                                print('dakhal el login');
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const LoginScreen()));
+                                              },
+                                              child: const Text('Sign In'))
+                                        ],
+                                        title: const Text('Sign In'),
+                                        content: const Text(
+                                            'Sign In to Post , Comment and Review'),
+                                        titlePadding: const EdgeInsets.only(
+                                            top: 20, left: 20),
+                                        contentPadding:
+                                            const EdgeInsets.all(20),
+                                      );
+                                    });
+                              } else {
+                                print('value put');
+                                print(value);
+                                // Here I add the rating record
+                                CollectionReference posts =
+                                    await FirebaseFirestore.instance
+                                        .collection('posts');
+                                posts
+                                    .doc(post_id_ as String?)
+                                    .collection('rating')
+                                    .doc(user?.uid)
+                                    .set(
+                                        {'rating': value, 'user_id': user?.uid})
+                                    .then((value) => print("rating Added"))
+                                    .catchError((error) =>
+                                        print("Failed to add rating: $error"));
 
-  showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('cancel')),
-                                      TextButton(
-                                          onPressed: () {
-                                            print('dakhal el login');
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const LoginScreen()));
-                                          },
-                                          child: const Text('Sign In'))
-                                    ],
-                                    title: const Text('Sign In'),
-                                    content: const Text(
-                                        'Sign In to Post , Comment and Review'),
-                                    titlePadding: const EdgeInsets.only(
-                                        top: 20, left: 20),
-                                    contentPadding: const EdgeInsets.all(20),
-                                  );
+                                // here I shall count the number of record and field value of avarege rating
+                                int number_of_documents = 0;
+                                double sum_of_ratings = 0;
+                                var samy = await posts
+                                    .doc(post_id_ as String?)
+                                    .collection('rating')
+                                    .get()
+                                    .then((QuerySnapshot QS) {
+                                  QS.docs.forEach((doc) {
+                                    print('index');
+                                    number_of_documents =
+                                        number_of_documents + 1;
+                                    num value = doc["rating"];
+                                    print(value);
+                                    sum_of_ratings = (sum_of_ratings + value);
+                                  });
                                 });
 
+                                await posts.doc(post_id_ as String?).update({
+                                  'average_rating':
+                                      sum_of_ratings! / number_of_documents
+                                }).then((value) {
+                                  print("sum_of_ratings");
+                                  print(sum_of_ratings);
+                                  print("number_of_documents");
 
-
-
-
-
+                                  print(number_of_documents);
+                                }).catchError((error) =>
+                                    print("Failed to add rating: $error"));
                               }
-                              else{
-                              print('value put');
-                              print(value);
-                              // Here I add the rating record
-                              CollectionReference posts =
-                                  await FirebaseFirestore.instance
-                                      .collection('posts');
-                              posts
-                                  .doc(post_id_ as String?)
-                                  .collection('rating')
-                                  .doc(user?.uid)
-                                  .set({'rating': value, 'user_id': user?.uid})
-                                  .then((value) => print("rating Added"))
-                                  .catchError((error) =>
-                                      print("Failed to add rating: $error"));
-
-                              // here I shall count the number of record and field value of avarege rating
-                              int number_of_documents = 0;
-                              double sum_of_ratings = 0;
-                              var samy = await posts
-                                  .doc(post_id_ as String?)
-                                  .collection('rating')
-                                  .get()
-                                  .then((QuerySnapshot QS) {
-                                QS.docs.forEach((doc) {
-                                  print('index');
-                                  number_of_documents = number_of_documents + 1;
-                                  num value = doc["rating"];
-                                  print(value);
-                                  sum_of_ratings = (sum_of_ratings + value);
-                                });
-                              });
-
-                              await posts.doc(post_id_ as String?).update({
-                                'average_rating':
-                                    sum_of_ratings! / number_of_documents
-                              }).then((value) {
-                                print("sum_of_ratings");
-                                print(sum_of_ratings);
-                                print("number_of_documents");
-
-                                print(number_of_documents);
-                              }).catchError((error) =>
-                                  print("Failed to add rating: $error"));
-                            
-                            
-                            
-                            }
                             }),
                       ),
                       ElevatedButton(
@@ -439,7 +432,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                                 });
                           } else if (user != null) {
                             print(user);
-                            showNewExpenseBottomSheet(context,post_id_!);
+                            showNewExpenseBottomSheet(context, post_id_!);
                           }
                         },
                         child: Row(

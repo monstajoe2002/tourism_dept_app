@@ -52,8 +52,8 @@ class _MyAppState extends State<MyApp> {
         var user = FirebaseAuth.instance.currentUser;
         if (user != null) {
           print('user authenticated fl main');
-         return Home();
-         // return Details_Screen();
+          return Home();
+          // return Details_Screen();
         } else {
           print('user is not authenticated fl main');
           return const LoginScreen();
@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
       ),
       home: ShowAppropriateScreen(),
       routes: {
-        '/details_screen':(context) => Details_Screen(),
+        '/details_screen': (context) => Details_Screen(),
       },
     );
   }

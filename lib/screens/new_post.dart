@@ -16,9 +16,16 @@ class NewPostScreen extends StatefulWidget {
 }
 
 class _NewPostScreenState extends State<NewPostScreen> {
-    var user_id = FirebaseAuth.instance.currentUser?.uid;
- 
-  final List<String> typeOptions = ['Restaurant', 'Museum', 'Wonder'];
+  var user_id = FirebaseAuth.instance.currentUser?.uid;
+
+  final List<String> typeOptions = [
+    'Restaurant',
+    'Wonder',
+    'Museum',
+    'Hotels',
+    'beach',
+    'club'
+  ];
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
@@ -31,6 +38,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
   File? _selectedImage;
   String? _selectedType;
 
+  Future<XFile?> _getImageFromCamera() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+    return image;
+  }
+
   Future<XFile?> _getImageFromGallery() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     return image;
@@ -42,14 +54,14 @@ class _NewPostScreenState extends State<NewPostScreen> {
       CollectionReference posts =
           FirebaseFirestore.instance.collection('posts');
       await posts.add({
-        'user_Id':user_id,
+        'user_Id': user_id,
         'name': name,
         'location': location,
         'imageUrl': imageUrl,
         'type': type,
         'description': description,
         'recommendation': recommendation,
-        'average_rating':0.0
+        'average_rating': 0.0
       });
       showDialog(
         context: context,
@@ -62,7 +74,6 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 child: Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  
                 },
               ),
             ],
@@ -225,29 +236,60 @@ class _NewPostScreenState extends State<NewPostScreen> {
                     ),
                   ),
                   SizedBox(height: 10.0),
-                  GestureDetector(
-                    onTap: () async {
-                      XFile? image = await _getImageFromGallery();
-                      if (image != null) {
-                        setState(() {
-                          _selectedImage = File(image.path);
-                        });
-                      }
-                    },
-                    child: Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          XFile? image = await _getImageFromCamera();
+                          if (image != null) {
+                            setState(() {
+                              _selectedImage = File(image.path);
+                            });
+                          }
+                        },
+                        child: Container(
+                          height: 200,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: _selectedImage != null
+                              ? Image.file(_selectedImage!)
+                              : Center(
+                                  child: Text(
+                                    'Tap to take photo',
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ),
+                        ),
                       ),
-                      child: _selectedImage != null
-                          ? Image.file(_selectedImage!)
-                          : Center(
-                              child: Text(
-                                'Tap to select image',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ),
-                    ),
+                      SizedBox(width: 10.0),
+                      GestureDetector(
+                        onTap: () async {
+                          XFile? image = await _getImageFromGallery();
+                          if (image != null) {
+                            setState(() {
+                              _selectedImage = File(image.path);
+                            });
+                          }
+                        },
+                        child: Container(
+                          height: 200,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: _selectedImage != null
+                              ? Image.file(_selectedImage!)
+                              : Center(
+                                  child: Text(
+                                    'Tap to select image',
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

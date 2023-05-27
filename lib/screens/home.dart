@@ -24,39 +24,30 @@ class Home extends StatelessWidget {
               InkWell(
                 child: ListTile(
                   leading: const Icon(Icons.logout_rounded),
-                  title:  Text(user!=null?'Logout':'Sign In'),
+                  title: Text(user != null ? 'Logout' : 'Sign In'),
 
-onTap: () {
-      if (user != null) {
+                  onTap: () {
+                    if (user != null) {
                       FirebaseAuth.instance.signOut().then((value) {
-
-Navigator.pushAndRemoveUntil<dynamic>(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => LoginScreen(),
-        ),
-        (route) => false,//if you want to disable back feature set to false
-);
-
+                        Navigator.pushAndRemoveUntil<dynamic>(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => LoginScreen(),
+                          ),
+                          (route) =>
+                              false, //if you want to disable back feature set to false
+                        );
                       });
                     } else {
-                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
                     }
-
-
                   },
-
-
-
-
-
 
                   // onTap: () {
 
-                    
                   //   if (user != null) {
                   //     FirebaseAuth.instance.signOut().then((value) {
                   //       // Navigator.push(
@@ -236,8 +227,9 @@ class _FilterChipExampleState extends State<FilterChipExample> {
                               title: document['name'],
                               location: document['location'],
                               imageUrl: document['imageUrl'],
-                              rating:double.parse(document['average_rating'].toString()),
-                              post_id:myDocuments[index].id,
+                              rating: double.parse(
+                                  document['average_rating'].toString()),
+                              post_id: myDocuments[index].id,
                               category: document['type']);
                         },
                         itemCount: myDocuments.length,
