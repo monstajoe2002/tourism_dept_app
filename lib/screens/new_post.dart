@@ -49,7 +49,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
         'type': type,
         'description': description,
         'recommendation': recommendation,
-        'rating':0
+        'average_rating':0.0
       });
       showDialog(
         context: context,

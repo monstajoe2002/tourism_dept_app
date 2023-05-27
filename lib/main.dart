@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tourism_dept_app/screens/details.dart';
 import 'package:tourism_dept_app/screens/loading_screen.dart';
 import 'package:tourism_dept_app/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -51,7 +52,8 @@ class _MyAppState extends State<MyApp> {
         var user = FirebaseAuth.instance.currentUser;
         if (user != null) {
           print('user authenticated fl main');
-          return Home();
+         return Home();
+         // return Details_Screen();
         } else {
           print('user is not authenticated fl main');
           return const LoginScreen();
@@ -73,6 +75,9 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home: ShowAppropriateScreen(),
+      routes: {
+        '/details_screen':(context) => Details_Screen(),
+      },
     );
   }
 }

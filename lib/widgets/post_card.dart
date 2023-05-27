@@ -6,22 +6,20 @@ class PostCard extends StatefulWidget {
   String location;
   String imageUrl;
   String category;
-  double? rating;
+  double rating;
+  String post_id;
   PostCard({
     Key? key,
     required this.title,
     required this.location,
     required this.imageUrl,
     required this.category,
-    this.rating,
+    required this.rating,
+    required this.post_id,
   }) : super(key: key);
 
   @override
   State<PostCard> createState() => _PostCardState();
-}
-
-void onRatingUpdate(double rating) {
-  debugPrint("rating value is $rating");
 }
 
 class _PostCardState extends State<PostCard> {
@@ -29,7 +27,8 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // TODO: Navigate to details screen
+        Navigator.pushNamed(context, "/details_screen",
+            arguments: widget.post_id);
       },
       borderRadius: BorderRadius.circular(20),
       child: ClipRRect(
@@ -74,13 +73,13 @@ class _PostCardState extends State<PostCard> {
                     ],
                   ),
                   const SizedBox(width: 10),
-                  RatingBar.builder(
-                    itemBuilder: (context, _) {
-                      return Icon(Icons.star, color: Colors.yellow.shade700);
-                    },
-                    onRatingUpdate: onRatingUpdate,
-                    itemSize: 18,
-                  )
+                  RatingBarIndicator(
+                      itemSize: 30,
+                      rating: widget.rating,
+                      itemBuilder: (context, index) {
+                        return const Icon(Icons.star,
+                            color: Color.fromARGB(255, 246, 188, 41));
+                      })
                 ],
               ),
             )
