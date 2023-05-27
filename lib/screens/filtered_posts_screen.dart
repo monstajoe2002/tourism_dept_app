@@ -11,14 +11,11 @@ class FilteredPostsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
     final postsInstance = FirebaseFirestore.instance.collection('posts');
-    final query = postsInstance
-        .where('type', isEqualTo: args['categoryFilter'])
-        .where('name', isEqualTo: args['searchParam']);
+    final stream = postsInstance.snapshots();
 
-    final stream = query.snapshots();
     return Scaffold(
       appBar: AppBar(
-        title: Text(args['categoryFilter'].toString()),
+        title: Text("Results for: '${args['searchParam']}'"),
       ),
       body: SingleChildScrollView(
         child: SizedBox(
@@ -33,16 +30,21 @@ class FilteredPostsScreen extends StatelessWidget {
                   return LoadingScreen();
                 }
                 var posts = snapshot.data!.docs;
+                final filteredPosts = posts
+                    .where((element) => element['name']
+                        .toString()
+                        .contains(args['searchParam'].toString().toLowerCase()))
+                    .toList();
                 return ListView.builder(
                   itemBuilder: (context, index) {
-                    var document = posts[index].data() as Map;
+                    var document = filteredPosts[index].data() as Map;
                     return PostCard(
                         title: document['name'],
                         location: document['location'],
                         imageUrl: document['imageUrl'],
                         category: document['type']);
                   },
-                  itemCount: posts.length,
+                  itemCount: filteredPosts.length,
                 );
               }),
         ),

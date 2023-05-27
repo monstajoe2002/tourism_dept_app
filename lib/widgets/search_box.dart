@@ -20,21 +20,18 @@ class _SearchBoxState extends State<SearchBox> {
             textInputAction: TextInputAction.search,
             onSubmitted: (value) {
               Navigator.pushNamed(context, '/filteredPosts',
-                  arguments: {'categoryFilter': "", 'searchParam': value});
+                  arguments: {'searchParam': value});
             },
             controller: _searchController,
             decoration: InputDecoration(
               hintText: 'Search...',
               // Add a clear button to the search b
-              suffixIcon: const IconButton(
-                icon: Icon(Icons.clear),
-                onPressed: null,
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () => _searchController.clear(),
               ),
               // Add a search icon or button to the search bar
-              prefixIcon: IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {},
-              ),
+              prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),

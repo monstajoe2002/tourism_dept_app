@@ -22,7 +22,7 @@ class Categories extends StatelessWidget {
           ],
           onSelected: (value, index, isSelected) {
             Navigator.pushNamed(context, '/filteredPosts',
-                arguments: {'categoryFilter': value, 'searchParam': ""});
+                arguments: {'categoryFilter': value});
           },
           options: const GroupButtonOptions(
               borderRadius: BorderRadius.all(Radius.circular(10)),
