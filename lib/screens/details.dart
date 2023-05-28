@@ -166,7 +166,8 @@ class _Details_ScreenState extends State<Details_Screen> {
                           color: Color.fromARGB(255, 30, 134, 219),
                         ),
                         Text(averagedoc["location"],
-                            style: const TextStyle(fontSize: 18, color: Colors.blue))
+                            style: const TextStyle(
+                                fontSize: 18, color: Colors.blue))
                       ]),
                       const SizedBox(
                         height: 5,
@@ -350,9 +351,9 @@ class _Details_ScreenState extends State<Details_Screen> {
                                 print('value put');
                                 print(value);
                                 // Here I add the rating record
-                                CollectionReference posts =
-                                    FirebaseFirestore.instance
-                                        .collection('posts');
+                                CollectionReference posts = FirebaseFirestore
+                                    .instance
+                                    .collection('posts');
                                 posts
                                     .doc(post_id_)
                                     .collection('rating')
@@ -373,8 +374,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                                     .then((QuerySnapshot QS) {
                                   for (var doc in QS.docs) {
                                     print('index');
-                                    numberOfDocuments =
-                                        numberOfDocuments + 1;
+                                    numberOfDocuments = numberOfDocuments + 1;
                                     num value = doc["rating"];
                                     print(value);
                                     sumOfRatings = (sumOfRatings + value);
@@ -383,7 +383,7 @@ class _Details_ScreenState extends State<Details_Screen> {
 
                                 await posts.doc(post_id_).update({
                                   'average_rating':
-                                      sumOfRatings/ numberOfDocuments
+                                      sumOfRatings / numberOfDocuments
                                 }).then((value) {
                                   print("sum_of_ratings");
                                   print(sumOfRatings);
@@ -435,7 +435,8 @@ class _Details_ScreenState extends State<Details_Screen> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white, backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.blue,
                             shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15)),
