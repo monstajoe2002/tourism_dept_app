@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:tourism_dept_app/screens/NewExWidget.dart';
 import 'package:tourism_dept_app/screens/login_screen.dart';
@@ -65,6 +63,7 @@ class _Details_ScreenState extends State<Details_Screen> {
   //   return name;
   // }
 
+  @override
   Widget build(BuildContext context) {
     final post_id_ = ModalRoute.of(context)!.settings.arguments;
 
@@ -76,7 +75,7 @@ class _Details_ScreenState extends State<Details_Screen> {
     // final AverageRating_instance = FirebaseFirestore.instance
     //     .collection('posts')
     //     .doc('0j28pN0UPyWH95eDbHWG');
-    double average_rating = 0;
+    double averageRating = 0;
     // var ay7aga = AverageRating_instance.get().then(
     //   (DocumentSnapshot doc) {
     //     final data = doc.data() as Map;
@@ -91,8 +90,8 @@ class _Details_ScreenState extends State<Details_Screen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: Center(
-            child: const Text(
+          title: const Center(
+            child: Text(
               "Details",
               style: TextStyle(
                   fontSize: 24,
@@ -104,23 +103,23 @@ class _Details_ScreenState extends State<Details_Screen> {
         body: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('posts')
-                .doc(post_id_ as String?)
+                .doc(post_id_)
                 .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
               var averagedoc = snapshot.data;
-              average_rating = averagedoc!['average_rating'];
+              averageRating = averagedoc!['average_rating'];
               return SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
+                      SizedBox(
                         height: 270,
                         child: Card(
                             semanticContainer: true,
@@ -129,13 +128,13 @@ class _Details_ScreenState extends State<Details_Screen> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                             elevation: 5,
-                            margin: EdgeInsets.all(10),
+                            margin: const EdgeInsets.all(10),
                             child: Image.network(
                               averagedoc["imageUrl"],
                               fit: BoxFit.fill,
                             )),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       Row(
@@ -143,50 +142,50 @@ class _Details_ScreenState extends State<Details_Screen> {
                         children: [
                           Text(
                             averagedoc["name"].toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ),
                           RatingBarIndicator(
                               itemSize: 30,
-                              rating: average_rating,
+                              rating: averageRating,
                               itemBuilder: (context, index) {
                                 return const Icon(Icons.star,
                                     color: Colors.black);
                               })
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Row(children: [
-                        Icon(
+                        const Icon(
                           Icons.location_on,
                           size: 25,
                           color: Color.fromARGB(255, 30, 134, 219),
                         ),
                         Text(averagedoc["location"],
-                            style: TextStyle(fontSize: 18, color: Colors.blue))
+                            style: const TextStyle(fontSize: 18, color: Colors.blue))
                       ]),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(averagedoc["description"],
-                          style: TextStyle(fontSize: 18)),
-                      SizedBox(
+                          style: const TextStyle(fontSize: 18)),
+                      const SizedBox(
                         height: 8,
                       ),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text('Type',
+                            const Text('Type',
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                             Text(averagedoc["type"],
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold))
@@ -198,19 +197,19 @@ class _Details_ScreenState extends State<Details_Screen> {
                         endIndent: 0,
                         color: Colors.black,
                       ),
-                      Text(
+                      const Text(
                         "Recommendation ",
                         style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       Text(
                         averagedoc["recommendation"],
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.normal,
                             color: Colors.black),
@@ -222,10 +221,10 @@ class _Details_ScreenState extends State<Details_Screen> {
                         endIndent: 0,
                         color: Colors.black,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 12,
                       ),
-                      Row(children: [
+                      const Row(children: [
                         Text(
                           "Comments ",
                           style: TextStyle(
@@ -235,7 +234,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                         ),
                         Icon(Icons.comment)
                       ]),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       StreamBuilder<QuerySnapshot>(
@@ -243,7 +242,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                         builder: (ctx, strSnapshot) {
                           if (strSnapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Center(
+                            return const Center(
                               child: CircularProgressIndicator(),
                             );
                           }
@@ -252,7 +251,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                           //  print(result.toString());
 
                           return ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
                             reverse: true,
@@ -270,13 +269,13 @@ class _Details_ScreenState extends State<Details_Screen> {
                                   // ),
                                   title: Row(
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons.person_3_outlined,
                                         size: 25,
                                       ),
                                       Text(
                                         document['user_name'],
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 24,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black),
@@ -285,7 +284,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                                   ),
                                   subtitle: Text(
                                     document['comment text'],
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.normal,
                                         color: Color.fromARGB(255, 26, 25, 25)),
@@ -308,7 +307,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                           );
                         },
                       ),
-                      Text('Rate The post'),
+                      const Text('Rate The post'),
                       Center(
                         child: RatingBar.builder(
                             itemBuilder: (context, index) => const Icon(
@@ -352,10 +351,10 @@ class _Details_ScreenState extends State<Details_Screen> {
                                 print(value);
                                 // Here I add the rating record
                                 CollectionReference posts =
-                                    await FirebaseFirestore.instance
+                                    FirebaseFirestore.instance
                                         .collection('posts');
                                 posts
-                                    .doc(post_id_ as String?)
+                                    .doc(post_id_)
                                     .collection('rating')
                                     .doc(user?.uid)
                                     .set(
@@ -365,32 +364,32 @@ class _Details_ScreenState extends State<Details_Screen> {
                                         print("Failed to add rating: $error"));
 
                                 // here I shall count the number of record and field value of avarege rating
-                                int number_of_documents = 0;
-                                double sum_of_ratings = 0;
+                                int numberOfDocuments = 0;
+                                double sumOfRatings = 0;
                                 var samy = await posts
-                                    .doc(post_id_ as String?)
+                                    .doc(post_id_)
                                     .collection('rating')
                                     .get()
                                     .then((QuerySnapshot QS) {
-                                  QS.docs.forEach((doc) {
+                                  for (var doc in QS.docs) {
                                     print('index');
-                                    number_of_documents =
-                                        number_of_documents + 1;
+                                    numberOfDocuments =
+                                        numberOfDocuments + 1;
                                     num value = doc["rating"];
                                     print(value);
-                                    sum_of_ratings = (sum_of_ratings + value);
-                                  });
+                                    sumOfRatings = (sumOfRatings + value);
+                                  }
                                 });
 
-                                await posts.doc(post_id_ as String?).update({
+                                await posts.doc(post_id_).update({
                                   'average_rating':
-                                      sum_of_ratings! / number_of_documents
+                                      sumOfRatings/ numberOfDocuments
                                 }).then((value) {
                                   print("sum_of_ratings");
-                                  print(sum_of_ratings);
+                                  print(sumOfRatings);
                                   print("number_of_documents");
 
-                                  print(number_of_documents);
+                                  print(numberOfDocuments);
                                 }).catchError((error) =>
                                     print("Failed to add rating: $error"));
                               }
@@ -435,17 +434,9 @@ class _Details_ScreenState extends State<Details_Screen> {
                             showNewExpenseBottomSheet(context, post_id_!);
                           }
                         },
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Comment'),
-                              SizedBox(width: 5),
-                              Icon(Icons.add_comment_rounded, size: 24.0)
-                            ]),
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            onPrimary: Colors.white,
-                            shape: RoundedRectangleBorder(
+                            foregroundColor: Colors.white, backgroundColor: Colors.blue,
+                            shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15)),
                             ),
@@ -453,6 +444,13 @@ class _Details_ScreenState extends State<Details_Screen> {
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             )),
+                        child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Comment'),
+                              SizedBox(width: 5),
+                              Icon(Icons.add_comment_rounded, size: 24.0)
+                            ]),
                       ),
                     ],
                   ),

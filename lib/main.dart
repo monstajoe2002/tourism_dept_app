@@ -10,10 +10,12 @@ import 'package:tourism_dept_app/screens/login_screen.dart';
 //import 'screens/signup_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -63,7 +65,7 @@ class _MyAppState extends State<MyApp> {
       print('el error b 1');
       return const Text('Error');
     } else {
-      return LoadingScreen();
+      return const LoadingScreen();
     }
   }
 
@@ -76,7 +78,7 @@ class _MyAppState extends State<MyApp> {
       ),
       home: ShowAppropriateScreen(),
       routes: {
-        '/details_screen': (context) => Details_Screen(),
+        '/details_screen': (context) => const Details_Screen(),
       },
     );
   }

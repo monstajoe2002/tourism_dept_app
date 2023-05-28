@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:tourism_dept_app/screens/home.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -13,10 +11,10 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController _passwordTextController = TextEditingController();
-  TextEditingController _emailTextController = TextEditingController();
-  TextEditingController _userNameTextController = TextEditingController();
-  TextEditingController _confirmpasswordTextController =
+  final TextEditingController _passwordTextController = TextEditingController();
+  final TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _userNameTextController = TextEditingController();
+  final TextEditingController _confirmpasswordTextController =
       TextEditingController();
   late UserCredential authResult;
 
@@ -134,7 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 firebaseUIButton(context, "Sign Up", () async {
                   if (_passwordTextController.text.length < 6) {
-                    final snackBar = SnackBar(
+                    const snackBar = SnackBar(
                       content:
                           Text('Password must be at least 6 charachters long'),
                       backgroundColor: Colors.red,
@@ -142,7 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else if (_confirmpasswordTextController.text !=
                       _passwordTextController.text) {
-                    final snackBar = SnackBar(
+                    const snackBar = SnackBar(
                       content: Text('Confirm passwork doesn\'t match password'),
                       backgroundColor: Colors.red,
                     );
@@ -163,7 +161,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         'username': _userNameTextController.text,
                         'email': _emailTextController.text,
                       });
-                         final snackBar = SnackBar(
+                         const snackBar = SnackBar(
                       content: Text('You have signed up successfully'),
                       backgroundColor: Colors.white,
                     );
@@ -172,7 +170,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         MaterialPageRoute(builder: (context) => Home()));
                     } on FirebaseAuthException catch (e) {
                       if (e.code == "email-already-in-use") {
-                        final snackBar = SnackBar(
+                        const snackBar = SnackBar(
                           content: Text('Email is already in use'),
                           backgroundColor: Colors.red,
                         );

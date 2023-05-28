@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tourism_dept_app/screens/loading_screen.dart';
 import 'package:tourism_dept_app/screens/login_screen.dart';
-import 'package:tourism_dept_app/widgets/categories.dart';
 import 'package:tourism_dept_app/widgets/post_card.dart';
 import 'package:tourism_dept_app/widgets/search_box.dart';
 
+import '../models/post.dart';
 import '../widgets/bottom_bar.dart';
 
 class Home extends StatelessWidget {
@@ -32,7 +31,8 @@ class Home extends StatelessWidget {
                         Navigator.pushAndRemoveUntil<dynamic>(
                           context,
                           MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) => LoginScreen(),
+                            builder: (BuildContext context) =>
+                                const LoginScreen(),
                           ),
                           (route) =>
                               false, //if you want to disable back feature set to false
@@ -42,7 +42,7 @@ class Home extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                              builder: (context) => const LoginScreen()));
                     }
                   },
 
@@ -90,7 +90,7 @@ class Home extends StatelessWidget {
             //           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
             //         ),
             //         const SearchBox(),
-            FilterChipExample(),
+            const FilterChipExample(),
         //const Categories(),
         // Container(
         //   margin: const EdgeInsets.only(top: 30),
@@ -132,7 +132,7 @@ class FilterChipExample extends StatefulWidget {
 }
 
 class _FilterChipExampleState extends State<FilterChipExample> {
-  int? _value = null;
+  int? _value;
   List<String> options = [
     'Restaurant',
     'Wonder',
@@ -144,7 +144,7 @@ class _FilterChipExampleState extends State<FilterChipExample> {
 
   @override
   Widget build(BuildContext context) {
-    var type;
+    String? type;
     if (_value == 0) {
       type = 'Restaurant';
     }
@@ -185,7 +185,7 @@ class _FilterChipExampleState extends State<FilterChipExample> {
                 stream: myStream,
                 builder: (ctx, strSnapshot) {
                   if (strSnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
@@ -217,7 +217,7 @@ class _FilterChipExampleState extends State<FilterChipExample> {
                         ),
                       ),
                       ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         reverse: true,

@@ -39,8 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
         child: TextField(
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
-          style: TextStyle(color: Colors.black, fontSize: 25),
-          decoration: InputDecoration(
+          style: const TextStyle(color: Colors.black, fontSize: 25),
+          decoration: const InputDecoration(
               border: InputBorder.none,
               //contentPadding: EdgeInsets.only(top:14),
               prefixIcon: Icon(Icons.mail, color: Colors.blue),
@@ -72,8 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
         child: TextField(
           controller: passwordController,
           obscureText: true,
-          style: TextStyle(color: Colors.black, fontSize: 25),
-          decoration: InputDecoration(
+          style: const TextStyle(color: Colors.black, fontSize: 25),
+          decoration: const InputDecoration(
               border: InputBorder.none,
               //contentPadding: EdgeInsets.only(top:14),
               prefixIcon: Icon(Icons.lock, color: Colors.blue),
@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return GestureDetector(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+              context, MaterialPageRoute(builder: (context) => const SignUpScreen()));
         },
         child: RichText(
           text: const TextSpan(
@@ -171,14 +171,14 @@ class _LoginScreenState extends State<LoginScreen> {
               });
             } on FirebaseAuthException catch (e) {
               if (e.code == 'invalid-email') {
-                final snackBar = SnackBar(
+                const snackBar = SnackBar(
                   content: Text('The email is wrongly formatted'),
                   backgroundColor: Colors.red,
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 print(e.code);
               } else if (e.code == 'user-not-found') {
-                final snackBar = SnackBar(
+                const snackBar = SnackBar(
                   content: Text(
                       'User Not Found. Kindly re-enter your email and password .'),
                   backgroundColor: Colors.red,
@@ -188,8 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           },
           style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              onPrimary: Colors.blue,
+              foregroundColor: Colors.blue, backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               textStyle: const TextStyle(
@@ -211,8 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 context, MaterialPageRoute(builder: (context) => Home()));
           },
           style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              onPrimary: Colors.blue,
+              foregroundColor: Colors.blue, backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               textStyle: const TextStyle(
@@ -223,6 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: GestureDetector(
