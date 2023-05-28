@@ -198,7 +198,7 @@ class _FilterChipExampleState extends State<FilterChipExample> {
                       //   child:
                       Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
+                    children: <Widget>[SizedBox(height:10),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -217,7 +217,7 @@ class _FilterChipExampleState extends State<FilterChipExample> {
                             },
                           ).toList(),
                         ),
-                      ),
+                      ),SizedBox(height:19),
                       ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,

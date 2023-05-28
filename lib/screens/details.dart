@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -122,6 +123,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                     children: [
                       Container(
                         height: 270,
+                        width: 500,
                         child: Card(
                             semanticContainer: true,
                             clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -158,17 +160,30 @@ class _Details_ScreenState extends State<Details_Screen> {
                         ],
                       ),
                       SizedBox(
-                        height: 5,
+                        height: 10,
                       ),
-                      Row(children: [
-                        Icon(
-                          Icons.location_on,
-                          size: 25,
-                          color: Color.fromARGB(255, 30, 134, 219),
-                        ),
-                        Text(averagedoc["location"],
-                            style: TextStyle(fontSize: 18, color: Colors.blue))
-                      ]),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(children: [
+                            Icon(
+                              Icons.location_on,
+                              size: 25,
+                              color: Color.fromARGB(255, 30, 134, 219),
+                            ),
+                            Text(averagedoc["location"],
+                                style: TextStyle(fontSize: 24, color: Colors.blue))
+                          ]),
+
+ Text(averagedoc["type"],
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold))
+
+
+                        ],
+                      ),
                       SizedBox(
                         height: 5,
                       ),
@@ -177,20 +192,20 @@ class _Details_ScreenState extends State<Details_Screen> {
                       SizedBox(
                         height: 8,
                       ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text('Type',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                            Text(averagedoc["type"],
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold))
-                          ]),
+                      // Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //     children: [
+                      //       Text('Type',
+                      //           style: TextStyle(
+                      //               fontSize: 18,
+                      //               color: Colors.black,
+                      //               fontWeight: FontWeight.bold)),
+                      //       Text(averagedoc["type"],
+                      //           style: TextStyle(
+                      //               fontSize: 18,
+                      //               color: Colors.black,
+                      //               fontWeight: FontWeight.bold))
+                      //     ]),
                       const Divider(
                         height: 20,
                         thickness: 5,
@@ -461,3 +476,4 @@ class _Details_ScreenState extends State<Details_Screen> {
             }));
   }
 }
+
