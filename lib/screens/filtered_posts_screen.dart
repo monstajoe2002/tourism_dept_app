@@ -38,11 +38,15 @@ class FilteredPostsScreen extends StatelessWidget {
                 return ListView.builder(
                   itemBuilder: (context, index) {
                     var document = filteredPosts[index].data() as Map;
+                    var docId = filteredPosts[index].id;
                     return PostCard(
+                        post_id: docId,
                         title: document['name'],
                         location: document['location'],
                         imageUrl: document['imageUrl'],
-                        category: document['type']);
+                        category: document['type'],
+                        rating: double.parse(
+                            document['average_rating'].toString()));
                   },
                   itemCount: filteredPosts.length,
                 );

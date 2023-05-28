@@ -108,8 +108,9 @@ class Home extends StatelessWidget {
                           return ListView.builder(
                               itemBuilder: (context, index) {
                                 var document = posts[index].data() as Map;
+                                final docId = posts[index].id;
                                 return PostCard(
-                                    post_id: document[index].id,
+                                    post_id: docId,
                                     title: document['name'],
                                     location: document['location'],
                                     imageUrl: document['imageUrl'],
