@@ -1,39 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:tourism_dept_app/screens/NewExWidget.dart';
 import 'package:tourism_dept_app/screens/login_screen.dart';
 
-class DetailsScreen extends StatefulWidget {
-  const DetailsScreen({Key? key}) : super(key: key);
+class Details_Screen extends StatefulWidget {
+  const Details_Screen({super.key});
 
   @override
-  State<DetailsScreen> createState() => _DetailsScreenState();
+  State<Details_Screen> createState() => _Details_ScreenState();
 }
 
-class _DetailsScreenState extends State<DetailsScreen> {
+class _Details_ScreenState extends State<Details_Screen> {
+  @override
   var user = FirebaseAuth.instance.currentUser;
-  List usersList = [];
-
-  void addNewExpense({
-    String? comment,
-    required String userId,
-    double? rating,
-    required String userEmail,
-    required String userName,
-    required String postId,
-  }) {
+  List users_list = [];
+  void addNewExpense(
+      {String? comment,
+      required String user_id,
+      double? rating,
+      required String user_email,
+      required String user_name,
+      required String post_id}) {
     FirebaseFirestore.instance
         .collection('posts')
-        .doc(postId)
+        .doc(post_id)
         .collection('Comment')
         .add({
           'comment text': comment,
           'rating': rating,
-          'user_id': userId,
-          'user_email': userEmail,
-          'user_name': userName,
+          'user_id': user_id,
+          'user_email': user_email,
+          'user_name': user_name
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -41,168 +42,422 @@ class _DetailsScreenState extends State<DetailsScreen> {
     Navigator.of(context).pop();
   }
 
-  void showNewExpenseBottomSheet(BuildContext ctx, String postId) {
+  void showNewExpenseBottomSheet(BuildContext ctx, String post_id_) {
     showModalBottomSheet(
-      context: ctx,
-      builder: (sheetContext) {
-        print('show modal');
-        return NewExWidget(callBackFunc: addNewExpense, post_id: postId);
-      },
-    );
+        context: ctx,
+        builder: (sheetContext) {
+          print('show modal');
+          return NewExWidget(callBackFunc: addNewExpense, post_id: post_id_);
+        });
   }
 
+  // Future<String> get_user_name(String user_id) async {
+  //   String name = 'undefined';
+  //   var result = await FirebaseFirestore.instance
+  //       .collection('Users')
+  //       .where('userId', isEqualTo: user_id)
+  //       .get()
+  //       .then((QuerySnapshot QS) {
+  //     QS.docs.forEach((doc) {
+  //       name = doc["username"];
+  //     });
+  //   });
+  //   return name;
+  // }
+
   Widget build(BuildContext context) {
-    final postId = ModalRoute.of(context)!.settings.arguments;
+    final post_id_ = ModalRoute.of(context)!.settings.arguments;
 
     var commentsInstance = FirebaseFirestore.instance
         .collection('posts')
-        .doc(postId as String?)
+        .doc(post_id_ as String?)
         .collection('Comment');
     var myStream = commentsInstance.snapshots();
-    double averageRating = 0;
+    // final AverageRating_instance = FirebaseFirestore.instance
+    //     .collection('posts')
+    //     .doc('0j28pN0UPyWH95eDbHWG');
+    double average_rating = 0;
+    // var ay7aga = AverageRating_instance.get().then(
+    //   (DocumentSnapshot doc) {
+    //     final data = doc.data() as Map;
+    //     print('average fl awel');
+    //     average_rating = data['average_rating'];
+    //     print(average_rating);
+    //   },
+    //   onError: (e) => print("Error getting document: $e"),
+    // );
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Center(
-          child: const Text(
-            "Details",
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-              fontFamily: 'YourDesiredFont',
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: Center(
+            child: const Text(
+              "Details",
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue),
             ),
           ),
         ),
-      ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('posts')
-            .doc(postId as String?)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          var averageDoc = snapshot.data;
-
-          averageRating = averageDoc!['average_rating'];
-
-          return SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 270,
-                    child: Card(
-                      semanticContainer: true,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      elevation: 5,
-                      margin: EdgeInsets.all(10),
-                      child: Image.network(
-                        averageDoc["imageUrl"],
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('posts')
+                .doc(post_id_ as String?)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              var averagedoc = snapshot.data;
+              average_rating = averagedoc!['average_rating'];
+              return SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        averageDoc["name"].toString(),
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontFamily: 'YourDesiredFont',
+                      Container(
+                        height: 270,
+                        child: Card(
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            elevation: 5,
+                            margin: EdgeInsets.all(10),
+                            child: Image.network(
+                              averagedoc["imageUrl"],
+                              fit: BoxFit.fill,
+                            )),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            averagedoc["name"].toString(),
+                            style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                          RatingBarIndicator(
+                              itemSize: 30,
+                              rating: average_rating,
+                              itemBuilder: (context, index) {
+                                return const Icon(Icons.star,
+                                    color: Colors.black);
+                              })
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(children: [
+                        Icon(
+                          Icons.location_on,
+                          size: 25,
+                          color: Color.fromARGB(255, 30, 134, 219),
                         ),
+                        Text(averagedoc["location"],
+                            style: TextStyle(fontSize: 18, color: Colors.blue))
+                      ]),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(averagedoc["description"],
+                          style: TextStyle(fontSize: 18)),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text('Type',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                            Text(averagedoc["type"],
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold))
+                          ]),
+                      const Divider(
+                        height: 20,
+                        thickness: 5,
+                        indent: 20,
+                        endIndent: 0,
+                        color: Colors.black,
                       ),
                       Text(
-                        averageDoc["type"].toString(),
+                        "Recommendation ",
                         style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                          fontFamily: 'YourDesiredFont',
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        averagedoc["recommendation"],
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black),
+                      ),
+                      const Divider(
+                        height: 20,
+                        thickness: 5,
+                        indent: 20,
+                        endIndent: 0,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Row(children: [
+                        Text(
+                          "Comments ",
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
                         ),
+                        Icon(Icons.comment)
+                      ]),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      StreamBuilder<QuerySnapshot>(
+                        stream: myStream,
+                        builder: (ctx, strSnapshot) {
+                          if (strSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          var myDocuments = strSnapshot.data!.docs;
+                          // var result = get_user_name('2wXImbz5mwSimFYy83v7vOw5MXm2');
+                          //  print(result.toString());
+
+                          return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            reverse: true,
+                            itemBuilder: (itemCtx, index) {
+                              var document = myDocuments[index].data() as Map;
+
+                              return Card(
+                                child: ListTile(
+                                  // leading: CircleAvatar(
+                                  //   backgroundColor: const Color(0xff764abc),
+                                  //   child: Icon(
+                                  //     Icons.account_circle,
+                                  //     size: 25,
+                                  //   ),
+                                  // ),
+                                  title: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.person_3_outlined,
+                                        size: 25,
+                                      ),
+                                      Text(
+                                        document['user_name'],
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                  subtitle: Text(
+                                    document['comment text'],
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.normal,
+                                        color: Color.fromARGB(255, 26, 25, 25)),
+                                  ),
+                                  // trailing: IconButton(
+                                  //   iconSize: 50,
+                                  //   onPressed: () {
+                                  //     ScaffoldMessenger.of(context)
+                                  //         .showSnackBar(
+                                  //             SnackBar(content: Text('Icon ')));
+                                  //   },
+                                  //   icon: Icon(
+                                  //     Icons.delete,
+                                  //   ),
+                                  // ),
+                                ),
+                              );
+                            },
+                            itemCount: myDocuments.length,
+                          );
+                        },
+                      ),
+                      Text('Rate The post'),
+                      Center(
+                        child: RatingBar.builder(
+                            itemBuilder: (context, index) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                                size: 20),
+                            onRatingUpdate: (value) async {
+                              if (user == null) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('cancel')),
+                                          TextButton(
+                                              onPressed: () {
+                                                print('dakhal el login');
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const LoginScreen()));
+                                              },
+                                              child: const Text('Sign In'))
+                                        ],
+                                        title: const Text('Sign In'),
+                                        content: const Text(
+                                            'Sign In to Post , Comment and Review'),
+                                        titlePadding: const EdgeInsets.only(
+                                            top: 20, left: 20),
+                                        contentPadding:
+                                            const EdgeInsets.all(20),
+                                      );
+                                    });
+                              } else {
+                                print('value put');
+                                print(value);
+                                // Here I add the rating record
+                                CollectionReference posts =
+                                    await FirebaseFirestore.instance
+                                        .collection('posts');
+                                posts
+                                    .doc(post_id_ as String?)
+                                    .collection('rating')
+                                    .doc(user?.uid)
+                                    .set(
+                                        {'rating': value, 'user_id': user?.uid})
+                                    .then((value) => print("rating Added"))
+                                    .catchError((error) =>
+                                        print("Failed to add rating: $error"));
+
+                                // here I shall count the number of record and field value of avarege rating
+                                int number_of_documents = 0;
+                                double sum_of_ratings = 0;
+                                var samy = await posts
+                                    .doc(post_id_ as String?)
+                                    .collection('rating')
+                                    .get()
+                                    .then((QuerySnapshot QS) {
+                                  QS.docs.forEach((doc) {
+                                    print('index');
+                                    number_of_documents =
+                                        number_of_documents + 1;
+                                    num value = doc["rating"];
+                                    print(value);
+                                    sum_of_ratings = (sum_of_ratings + value);
+                                  });
+                                });
+
+                                await posts.doc(post_id_ as String?).update({
+                                  'average_rating':
+                                      sum_of_ratings / number_of_documents
+                                }).then((value) {
+                                  print("sum_of_ratings");
+                                  print(sum_of_ratings);
+                                  print("number_of_documents");
+
+                                  print(number_of_documents);
+                                }).catchError((error) =>
+                                    print("Failed to add rating: $error"));
+                              }
+                            }),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          print('pressed');
+
+                          if (user == null) {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('cancel')),
+                                      TextButton(
+                                          onPressed: () {
+                                            print('dakhal el login');
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const LoginScreen()));
+                                          },
+                                          child: const Text('Sign In'))
+                                    ],
+                                    title: const Text('Sign In'),
+                                    content: const Text(
+                                        'Sign In to Post , Comment and Review'),
+                                    titlePadding: const EdgeInsets.only(
+                                        top: 20, left: 20),
+                                    contentPadding: const EdgeInsets.all(20),
+                                  );
+                                });
+                          } else if (user != null) {
+                            print(user);
+                            showNewExpenseBottomSheet(context, post_id_!);
+                          }
+                        },
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Comment'),
+                              SizedBox(width: 5),
+                              Icon(Icons.add_comment_rounded, size: 24.0)
+                            ]),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            onPrimary: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                            ),
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            )),
                       ),
                     ],
                   ),
-                  SizedBox(height: 8),
-                  RatingBar.builder(
-                    initialRating: averageRating,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemSize: 30,
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {
-                      print(rating);
-                    },
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    "Comments",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontFamily: 'YourDesiredFont',
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  StreamBuilder(
-                    stream: myStream,
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return CircularProgressIndicator();
-                      }
-                      var comments = snapshot.data!.docs;
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: comments.length,
-                        itemBuilder: (context, index) {
-                          var comment = comments[index];
-                          return ListTile(
-                            title: Text(comment["comment text"]),
-                            subtitle: Text(comment["user_name"]),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (user != null) {
-            showNewExpenseBottomSheet(context, postId as String);
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
-            );
-          }
-        },
-        child: Icon(Icons.add),
-      ),
-    );
+                ),
+              );
+            }));
   }
 }
