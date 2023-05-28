@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
       ),
       home: ShowAppropriateScreen(),
       routes: {
-        '/details_screen': (context) => Details_Screen(),
+        '/details_screen': (context) => DetailsScreen(),
       },
     );
   }
