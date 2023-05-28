@@ -7,6 +7,8 @@ import 'package:tourism_dept_app/widgets/search_box.dart';
 
 import '../models/post.dart';
 import '../widgets/bottom_bar.dart';
+import '../widgets/categories.dart';
+import 'loading_screen.dart';
 
 class Home extends StatelessWidget {
   var user = FirebaseAuth.instance.currentUser;
@@ -107,10 +109,13 @@ class Home extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 var document = posts[index].data() as Map;
                                 return PostCard(
+                                    post_id: document[index].id,
                                     title: document['name'],
                                     location: document['location'],
                                     imageUrl: document['imageUrl'],
-                                    category: document['type']);
+                                    category: document['type'],
+                                    rating: double.parse(
+                                        document['average_rating'].toString()));
                               },
                               itemCount: posts.length);
                         },
