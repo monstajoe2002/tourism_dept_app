@@ -225,7 +225,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                       const SizedBox(
                         height: 12,
                       ),
-                      const Row(children: [
+                      Row(children: [
                         Text(
                           "Comments ",
                           style: TextStyle(
@@ -445,7 +445,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             )),
-                        child: const Row(
+                        child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text('Comment'),
