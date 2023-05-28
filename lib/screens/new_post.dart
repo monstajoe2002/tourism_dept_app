@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:tourism_dept_app/screens/home.dart'; // Import the Home class
@@ -65,11 +67,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Success'),
-            content: const Text('Post created successfully!'),
+            title: Text('Success'),
+            content: Text('Post created successfully!'),
             actions: [
               TextButton(
-                child: const Text('OK'),
+                child: Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -84,11 +86,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Error'),
-            content: const Text('Failed to create post. Please try again.'),
+            title: Text('Error'),
+            content: Text('Failed to create post. Please try again.'),
             actions: [
               TextButton(
-                child: const Text('OK'),
+                child: Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -150,8 +152,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 shape: BoxShape.circle,
                 color: Colors.white.withOpacity(0.2),
               ),
-              padding: const EdgeInsets.all(10.0),
-              child: const CircleAvatar(
+              child: CircleAvatar(
                 backgroundColor: Colors.blue,
                 child: Text(
                   '<',
@@ -162,15 +163,16 @@ class _NewPostScreenState extends State<NewPostScreen> {
                   ),
                 ),
               ),
+              padding: EdgeInsets.all(10.0),
             ),
           ),
         ),
         body: SafeArea(
           child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
             children: [
-              const SizedBox(height: 20.0),
-              const Center(
+              SizedBox(height: 20.0),
+              Center(
                 child: Text(
                   'New Post',
                   style: TextStyle(
@@ -180,60 +182,60 @@ class _NewPostScreenState extends State<NewPostScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 40.0),
+              SizedBox(height: 40.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Name',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0),
                   TextFormField(
                     controller: _nameController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Enter name',
                       border: OutlineInputBorder(),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: 20.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Location',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0),
                   TextFormField(
                     controller: _locationController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Enter location',
                       border: OutlineInputBorder(),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: 20.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Image',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0),
                   Row(
                     children: [
                       GestureDetector(
@@ -253,7 +255,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                           ),
                           child: _selectedImage != null
                               ? Image.file(_selectedImage!)
-                              : const Center(
+                              : Center(
                                   child: Text(
                                     'Tap to take photo',
                                     style: TextStyle(color: Colors.grey),
@@ -261,7 +263,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                                 ),
                         ),
                       ),
-                      const SizedBox(width: 10.0),
+                      SizedBox(width: 10.0),
                       GestureDetector(
                         onTap: () async {
                           XFile? image = await _getImageFromGallery();
@@ -279,7 +281,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                           ),
                           child: _selectedImage != null
                               ? Image.file(_selectedImage!)
-                              : const Center(
+                              : Center(
                                   child: Text(
                                     'Tap to select image',
                                     style: TextStyle(color: Colors.grey),
@@ -291,18 +293,18 @@ class _NewPostScreenState extends State<NewPostScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: 20.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Type',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0),
                   DropdownButtonFormField<String>(
                     value: _selectedType,
                     onChanged: (String? newValue) {
@@ -317,31 +319,31 @@ class _NewPostScreenState extends State<NewPostScreen> {
                         child: Text(value),
                       );
                     }).toList(),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       isDense: true,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: 20.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Description',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0),
                   TextFormField(
                     controller: _descriptionController,
                     onChanged: (value) {
                       description = value;
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Enter description',
                       border: OutlineInputBorder(),
                     ),
@@ -350,24 +352,24 @@ class _NewPostScreenState extends State<NewPostScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: 20.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Recommendation',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0),
                   TextFormField(
                     controller: _recommendationController,
                     onChanged: (value) {
                       recommendation = value;
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Enter recommendation',
                       border: OutlineInputBorder(),
                     ),
@@ -376,7 +378,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 40.0),
+              SizedBox(height: 40.0),
               ElevatedButton(
                 onPressed: () async {
                   if (_nameController.text.isEmpty ||
@@ -390,11 +392,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: const Text('Error'),
-                          content: const Text('Please fill in all fields.'),
+                          title: Text('Error'),
+                          content: Text('Please fill in all fields.'),
                           actions: [
                             TextButton(
-                              child: const Text('OK'),
+                              child: Text('OK'),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
@@ -415,7 +417,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                       recommendation!);
                   _resetFields();
                 },
-                child: const Text('Post'),
+                child: Text('Post'),
               ),
             ],
           ),

@@ -41,75 +41,49 @@ class _PostCardState extends State<PostCard> {
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.blue, width: 2.0),
+            border: Border.all(color: Colors.grey.shade400, width: 2.0),
           ),
           margin: const EdgeInsets.only(bottom: 30),
-          child: Column(
-            children: [
-              FractionallySizedBox(
-                widthFactor: 1.0,
-                child: Image.network(
-                  widget.imageUrl,
-                  fit: BoxFit.cover,
-                  height: 214,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      // Wrap the title and location with Expanded widget
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(children: [
+            Image.network(
+              widget.imageUrl,
+              fit: BoxFit.cover,
+              width: 260,
+              height: 200,
+            ),
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.title,
+                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
                         children: [
-                          Text(
-                            widget.title,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30, // Adjust the font size as desired
-                              fontFamily:
-                                  'Montserrat', // Set the desired font family
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.pin_drop,
-                                color: Colors.blue,
-                              ),
-                              Text(
-                                widget.location,
-                                style: const TextStyle(
-                                  fontSize:
-                                      20, // Adjust the font size as desired
-                                  fontFamily:
-                                      'Montserrat', // Set the desired font family
-                                ),
-                              ),
-                            ],
-                          ),
+                          const Icon(Icons.pin_drop),
+                          Text(widget.location),
                         ],
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    RatingBarIndicator(
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  RatingBarIndicator(
                       itemSize: 30,
                       rating: widget.rating,
                       itemBuilder: (context, index) {
-                        return const Icon(
-                          Icons.star,
-                          color: Color.fromARGB(255, 246, 188, 41),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                        return const Icon(Icons.star,
+                            color: Color.fromARGB(255, 246, 188, 41));
+                      })
+                ],
               ),
-            ],
-          ),
+            )
+          ]),
         ),
       ),
     );
