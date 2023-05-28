@@ -22,27 +22,25 @@ class Home extends StatelessWidget {
             children: [
               InkWell(
                 child: ListTile(
-                  leading: const Icon(Icons.logout_rounded),
-                  title: Text(user != null ? 'Logout' : 'Sign In'),
-
+                  leading: (user == null)
+                      ? const Icon(Icons.login_rounded)
+                      : const Icon(Icons.logout_rounded),
+                  title: (user == null)
+                      ? const Text('Log In / Sign Up')
+                      : const Text('Log Out'),
                   onTap: () {
                     if (user != null) {
                       FirebaseAuth.instance.signOut().then((value) {
-                        Navigator.pushAndRemoveUntil<dynamic>(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) =>
-                                const LoginScreen(),
-                          ),
-                          (route) =>
-                              false, //if you want to disable back feature set to false
-                        );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
                       });
                     } else {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LoginScreen()));
+                              builder: (context) => LoginScreen()));
                     }
                   },
 
@@ -76,50 +74,52 @@ class Home extends StatelessWidget {
             ],
           ),
         ),
-        // body: SingleChildScrollView(
-        // child:
-        body:
-            // Container(
-            //     padding: const EdgeInsets.all(30),
-            //     child: Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         const Text('Hi there 👋', style: TextStyle(fontSize: 20.0)),
-            //         const Text(
-            //           'Take a virtual museum tour',
-            //           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
-            //         ),
-            //         const SearchBox(),
-            const FilterChipExample(),
-        //const Categories(),
-        // Container(
-        //   margin: const EdgeInsets.only(top: 30),
-        //   child: Center(
-        //     child: StreamBuilder<QuerySnapshot>(
-        //   stream: stream,
-        //   builder: (context, snapshot) {
-        //     if (snapshot.connectionState ==
-        //         ConnectionState.waiting) {
-        //       return LoadingScreen();
-        //     }
-        //     var posts = snapshot.data!.docs;
-        //     return ListView.builder(
-        //         itemBuilder: (context, index) {
-        //           var document = posts[index].data() as Map;
-        //           return PostCard(
-        //               title: document['name'],
-        //               location: document['location'],
-        //               imageUrl: document['imageUrl'],
-        //               category: document['type']);
-        //         },
-        //         itemCount: posts.length);
-        //   },
-        // )
-        //           ),
-        //     )
-        //   ],
-        // )),
-        // ),
+        body: SingleChildScrollView(
+          child: Container(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Hi there 👋', style: TextStyle(fontSize: 20.0)),
+                  const Text(
+                    'Take a virtual museum tour',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
+                  ),
+                  const SearchBox(),
+                  const Categories(),
+                  Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: Center(
+                          child: StreamBuilder<QuerySnapshot>(
+                        stream: stream,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return LoadingScreen();
+                          }
+                          if (!snapshot.hasData) {
+                            return LoadingScreen();
+                          }
+                          var posts = snapshot.data!.docs;
+                          return ListView.builder(
+                              itemBuilder: (context, index) {
+                                var document = posts[index].data() as Map;
+                                return PostCard(
+                                    title: document['name'],
+                                    location: document['location'],
+                                    imageUrl: document['imageUrl'],
+                                    category: document['type']);
+                              },
+                              itemCount: posts.length);
+                        },
+                      )),
+                    ),
+                  )
+                ],
+              )),
+        ),
         bottomNavigationBar: const BottomBar());
   }
 }

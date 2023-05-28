@@ -73,14 +73,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
-  comment_box:
-    dependency: "direct main"
-    description:
-      name: comment_box
-      sha256: "6a0d9cc8d181435b123cc4249c567bd8bdf1bde8d714691b069b942e3e7d4fbb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.18"
   cross_file:
     dependency: transitive
     description:
@@ -153,30 +145,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.5.0"
-  firebase_storage:
+  firebase_messaging:
     dependency: "direct main"
     description:
-      name: firebase_storage
-      sha256: "89ff2dfd353f953fb2bbbe04359ea1a46d643944f310cfed22dadf352fc16976"
+      name: firebase_messaging
+      sha256: "9cfe5c4560fb83393511ca7620f8fb3f22c9a80303052f10290e732fcfb801bd"
       url: "https://pub.dev"
     source: hosted
-    version: "11.2.1"
-  firebase_storage_platform_interface:
+    version: "14.6.1"
+  firebase_messaging_platform_interface:
     dependency: transitive
     description:
-      name: firebase_storage_platform_interface
-      sha256: c06ccd21c3ed20da6128629ab7d525f7b613caddfcd5466ba4a1ff58655261ac
+      name: firebase_messaging_platform_interface
+      sha256: "7e25cb71019ccef8b1fd7b37969af79f04c467974cce4dfc291fa36974edd7ba"
       url: "https://pub.dev"
     source: hosted
-    version: "4.4.1"
-  firebase_storage_web:
+    version: "4.5.1"
+  firebase_messaging_web:
     dependency: transitive
     description:
-      name: firebase_storage_web
-      sha256: "26a039f211b226fc216f9f06f13402bdf08661edb7c42cb1de3bd236afbbbf75"
+      name: firebase_messaging_web
+      sha256: "5d9840cc8126ea723b1bda901389cb542902f664f2653c16d4f8114e95f13cec"
       url: "https://pub.dev"
     source: hosted
-    version: "3.6.1"
+    version: "3.5.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -216,14 +208,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  get:
-    dependency: "direct main"
-    description:
-      name: get
-      sha256: "2ba20a47c8f1f233bed775ba2dd0d3ac97b4cf32fc17731b3dfc672b06b0e92a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.6.5"
   group_button:
     dependency: "direct main"
     description:
@@ -328,6 +312,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   path:
     dependency: transitive
     description:
@@ -344,6 +336,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      sha256: cdbe7530b12ecd9eb455bdaa2fcb8d4dad22e80b8afb4798b41479d5ce26847f
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.5"
   sky_engine:
     dependency: transitive
     description: flutter
