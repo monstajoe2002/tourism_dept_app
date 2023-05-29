@@ -50,9 +50,15 @@ class Home extends StatelessWidget {
                                       Icon(Icons.person_2_outlined, size: 24.0),
                                 ),
                                 title: Text(
-                                  averagedoc!["username"].toString(),
+                                  averagedoc!["username"].toString(),style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
                                 ),
-                                subtitle: Text(averagedoc["email"].toString()),
+                                subtitle: Text(averagedoc["email"].toString(),style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),),
                               );
                             },
                           )
@@ -61,7 +67,17 @@ class Home extends StatelessWidget {
                               backgroundColor: const Color(0xff764abc),
                               child: Icon(Icons.person_2_outlined, size: 24.0),
                             ),
-                            title: Text('Hi User !'),
+                            title: Text('Hi User !', 
+                               style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                            
+                            ),
+                            subtitle: Text('Nice to see you here' ,style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),),
                           ),
                   ],
                 ),
