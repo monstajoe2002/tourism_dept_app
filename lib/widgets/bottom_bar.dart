@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:tourism_dept_app/screens/new_post.dart';
@@ -65,11 +66,20 @@ class _BottomBarState extends State<BottomBar> {
           title: const Text('Home'),
           backgroundColor: Colors.blueAccent.shade200,
         ),
+        // BottomNavigationBarItem(
+        //     icon: Icon(Icons.favorite_rounded), label: 'Favorites'),
         BottomBarItem(
           icon: const Icon(Icons.add_circle_outline_rounded),
           title: const Text('New Post'),
           backgroundColor: Colors.greenAccent.shade700,
         ),
+        BottomBarItem(
+          icon: const Icon(Icons.notifications),
+          title: const Text('Notifications'),
+          backgroundColor: Colors.yellow.shade700,
+        ),
+        // BottomNavigationBarItem(
+        //     icon: Icon(Icons.account_circle_rounded), label: 'Profile'),
       ],
       currentIndex: _selectedIndex,
       option: BubbleBarOptions(
