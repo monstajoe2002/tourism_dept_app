@@ -260,62 +260,87 @@ class _Details_ScreenState extends State<Details_Screen> {
                           var myDocuments = strSnapshot.data!.docs;
                           // var result = get_user_name('2wXImbz5mwSimFYy83v7vOw5MXm2');
                           //  print(result.toString());
-
-                          return ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            reverse: true,
-                            itemBuilder: (itemCtx, index) {
-                              var document = myDocuments[index].data() as Map;
-
-                              return Card(
-                                child: ListTile(
-                                  // leading: CircleAvatar(
-                                  //   backgroundColor: const Color(0xff764abc),
-                                  //   child: Icon(
-                                  //     Icons.account_circle,
-                                  //     size: 25,
-                                  //   ),
-                                  // ),
-                                  title: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.person_3_outlined,
-                                        size: 25,
+                          if (strSnapshot.hasData &&  myDocuments.isEmpty) {
+                            print('salamo 3alekom');
+                            return Container(
+                              height:80,
+                              width:double.infinity,
+                              decoration: BoxDecoration(
+  color: Color.fromARGB(255, 149, 152, 155),
+    borderRadius: BorderRadius.all(Radius.circular(30)),
+  ),
+                              
+                                
+                                  child: Center(
+                                    child: Text(
+                                      "No Comments Yet",
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black),
+                                    ),
+                                  ),
+                                
+                            );
+                          } else {
+                            return ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              reverse: true,
+                              itemBuilder: (itemCtx, index) {
+                                var document = myDocuments[index].data() as Map;
+                           
+                                  return Card(
+                                    child: ListTile(
+                                      // leading: CircleAvatar(
+                                      //   backgroundColor: const Color(0xff764abc),
+                                      //   child: Icon(
+                                      //     Icons.account_circle,
+                                      //     size: 25,
+                                      //   ),
+                                      // ),
+                                      title: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.person_3_outlined,
+                                            size: 25,
+                                          ),
+                                          Text(
+                                            document['user_name'],
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        document['user_name'],
+                                      subtitle: Text(
+                                        document['comment text'],
                                         style: TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.normal,
+                                            color: Color.fromARGB(
+                                                255, 26, 25, 25)),
                                       ),
-                                    ],
-                                  ),
-                                  subtitle: Text(
-                                    document['comment text'],
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal,
-                                        color: Color.fromARGB(255, 26, 25, 25)),
-                                  ),
-                                  // trailing: IconButton(
-                                  //   iconSize: 50,
-                                  //   onPressed: () {
-                                  //     ScaffoldMessenger.of(context)
-                                  //         .showSnackBar(
-                                  //             SnackBar(content: Text('Icon ')));
-                                  //   },
-                                  //   icon: Icon(
-                                  //     Icons.delete,
-                                  //   ),
-                                  // ),
-                                ),
-                              );
-                            },
-                            itemCount: myDocuments.length,
-                          );
+                                      // trailing: IconButton(
+                                      //   iconSize: 50,
+                                      //   onPressed: () {
+                                      //     ScaffoldMessenger.of(context)
+                                      //         .showSnackBar(
+                                      //             SnackBar(content: Text('Icon ')));
+                                      //   },
+                                      //   icon: Icon(
+                                      //     Icons.delete,
+                                      //   ),
+                                      // ),
+                                    ),
+                                  );
+                                
+                              },
+                              itemCount: myDocuments.length,
+                            );
+                          }
                         },
                       ),
                       SizedBox(height: 25),
