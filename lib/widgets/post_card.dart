@@ -68,7 +68,7 @@ class _PostCardState extends State<PostCard> {
                             widget.title,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 30, // Adjust the font size as desired
+                              fontSize: 15, // Adjust the font size as desired
                               fontFamily:
                                   'Montserrat', // Set the desired font family
                             ),
@@ -84,7 +84,7 @@ class _PostCardState extends State<PostCard> {
                                 widget.location,
                                 style: const TextStyle(
                                   fontSize:
-                                      20, // Adjust the font size as desired
+                                      15, // Adjust the font size as desired
                                   fontFamily:
                                       'Montserrat', // Set the desired font family
                                 ),

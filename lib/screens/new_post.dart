@@ -152,14 +152,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
               ),
               padding: const EdgeInsets.all(10.0),
               child: const CircleAvatar(
-                backgroundColor: Colors.blue,
-                child: Text(
-                  '<',
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                backgroundColor: Colors.white,
+                child: Icon(
+                  Icons.arrow_back,
+                  size: 24.0,
+                  color: Colors.blue,
                 ),
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tourism_dept_app/screens/NewExWidget.dart';
 import 'package:tourism_dept_app/screens/login_screen.dart';
 
@@ -90,7 +91,22 @@ class _Details_ScreenState extends State<Details_Screen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: const Center(
+          leading: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+            ),
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.blue,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+          title: Center(
             child: Text(
               "Details",
               style: TextStyle(
@@ -159,44 +175,43 @@ class _Details_ScreenState extends State<Details_Screen> {
                       const SizedBox(
                         height: 5,
                       ),
-                      Row(children: [
-                        const Icon(
-                          Icons.location_on,
-                          size: 25,
-                          color: Color.fromARGB(255, 30, 134, 219),
-                        ),
-                        Text(averagedoc["location"],
-                            style: const TextStyle(
-                                fontSize: 18, color: Colors.blue))
-                      ]),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(averagedoc["description"],
-                          style: const TextStyle(fontSize: 18)),
-                      const SizedBox(
-                        height: 8,
-                      ),
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            const Text('Type',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                            Text(averagedoc["type"],
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on,
+                                size: 25,
+                                color: Color.fromARGB(255, 30, 134, 219),
+                              ),
+                              Text(
+                                averagedoc["location"],
                                 style: const TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold))
-                          ]),
-                      const Divider(
+                                    fontSize: 18, color: Colors.blue),
+                              )
+                            ],
+                          ),
+                          Text(
+                            averagedoc["type"],
+                            style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
                         height: 20,
-                        thickness: 5,
-                        indent: 20,
-                        endIndent: 0,
-                        color: Colors.black,
+                      ),
+                      Text(
+                        averagedoc["description"],
+                        style: GoogleFonts.georama(
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
                       ),
                       const Text(
                         "Recommendation ",
@@ -206,7 +221,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                             color: Colors.black),
                       ),
                       const SizedBox(
-                        height: 8,
+                        height: 6,
                       ),
                       Text(
                         averagedoc["recommendation"],
@@ -214,13 +229,6 @@ class _Details_ScreenState extends State<Details_Screen> {
                             fontSize: 20,
                             fontWeight: FontWeight.normal,
                             color: Colors.black),
-                      ),
-                      const Divider(
-                        height: 20,
-                        thickness: 5,
-                        indent: 20,
-                        endIndent: 0,
-                        color: Colors.black,
                       ),
                       const SizedBox(
                         height: 12,

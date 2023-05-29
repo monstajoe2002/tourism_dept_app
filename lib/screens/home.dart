@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tourism_dept_app/screens/loading_screen.dart';
 import 'package:tourism_dept_app/screens/login_screen.dart';
+import 'package:tourism_dept_app/widgets/categories.dart';
 import 'package:tourism_dept_app/widgets/post_card.dart';
 import 'package:tourism_dept_app/widgets/search_box.dart';
 
-import '../models/post.dart';
 import '../widgets/bottom_bar.dart';
-import '../widgets/categories.dart';
-import 'loading_screen.dart';
 
 class Home extends StatelessWidget {
   var user = FirebaseAuth.instance.currentUser;
@@ -27,16 +26,19 @@ class Home extends StatelessWidget {
                   leading: (user == null)
                       ? const Icon(Icons.login_rounded)
                       : const Icon(Icons.logout_rounded),
-                  title: (user == null)
-                      ? const Text('Log In / Sign Up')
-                      : const Text('Log Out'),
+                  title: Text(user != null ? 'Logout' : 'Sign In'),
+
                   onTap: () {
                     if (user != null) {
                       FirebaseAuth.instance.signOut().then((value) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                        Navigator.pushAndRemoveUntil<dynamic>(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => LoginScreen(),
+                          ),
+                          (route) =>
+                              false, //if you want to disable back feature set to false
+                        );
                       });
                     } else {
                       Navigator.push(
@@ -76,56 +78,50 @@ class Home extends StatelessWidget {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-              padding: const EdgeInsets.all(30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Hi there 👋', style: TextStyle(fontSize: 20.0)),
-                  const Text(
-                    'Take a virtual museum tour',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
-                  ),
-                  const SearchBox(),
-                  const Categories(),
-                  Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: Center(
-                          child: StreamBuilder<QuerySnapshot>(
-                        stream: stream,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return LoadingScreen();
-                          }
-                          if (!snapshot.hasData) {
-                            return LoadingScreen();
-                          }
-                          var posts = snapshot.data!.docs;
-                          return ListView.builder(
-                              itemBuilder: (context, index) {
-                                var document = posts[index].data() as Map;
-                                final docId = posts[index].id;
-                                return PostCard(
-                                    post_id: docId,
-                                    title: document['name'],
-                                    location: document['location'],
-                                    imageUrl: document['imageUrl'],
-                                    category: document['type'],
-                                    rating: double.parse(
-                                        document['average_rating'].toString()));
-                              },
-                              itemCount: posts.length);
-                        },
-                      )),
-                    ),
-                  )
-                ],
-              )),
-        ),
+        // body: SingleChildScrollView(
+        // child:
+        body:
+            // Container(
+            //     padding: const EdgeInsets.all(30),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         const Text('Hi there 👋', style: TextStyle(fontSize: 20.0)),
+            //         const Text(
+            //           'Take a virtual museum tour',
+            //           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
+            //         ),
+            //         const SearchBox(),
+            FilterChipExample(),
+        //const Categories(),
+        // Container(
+        //   margin: const EdgeInsets.only(top: 30),
+        //   child: Center(
+        //     child: StreamBuilder<QuerySnapshot>(
+        //   stream: stream,
+        //   builder: (context, snapshot) {
+        //     if (snapshot.connectionState ==
+        //         ConnectionState.waiting) {
+        //       return LoadingScreen();
+        //     }
+        //     var posts = snapshot.data!.docs;
+        //     return ListView.builder(
+        //         itemBuilder: (context, index) {
+        //           var document = posts[index].data() as Map;
+        //           return PostCard(
+        //               title: document['name'],
+        //               location: document['location'],
+        //               imageUrl: document['imageUrl'],
+        //               category: document['type']);
+        //         },
+        //         itemCount: posts.length);
+        //   },
+        // )
+        //           ),
+        //     )
+        //   ],
+        // )),
+        // ),
         bottomNavigationBar: const BottomBar());
   }
 }
@@ -138,7 +134,7 @@ class FilterChipExample extends StatefulWidget {
 }
 
 class _FilterChipExampleState extends State<FilterChipExample> {
-  int? _value;
+  int? _value = null;
   List<String> options = [
     'Restaurant',
     'Wonder',
@@ -150,7 +146,7 @@ class _FilterChipExampleState extends State<FilterChipExample> {
 
   @override
   Widget build(BuildContext context) {
-    String? type;
+    var type;
     if (_value == 0) {
       type = 'Restaurant';
     }
@@ -191,7 +187,7 @@ class _FilterChipExampleState extends State<FilterChipExample> {
                 stream: myStream,
                 builder: (ctx, strSnapshot) {
                   if (strSnapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
+                    return Center(
                       child: CircularProgressIndicator(),
                     );
                   }
@@ -203,6 +199,7 @@ class _FilterChipExampleState extends State<FilterChipExample> {
                       Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
+                      SizedBox(height: 10),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -222,8 +219,9 @@ class _FilterChipExampleState extends State<FilterChipExample> {
                           ).toList(),
                         ),
                       ),
+                      SizedBox(height: 19),
                       ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
+                        physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         reverse: true,
