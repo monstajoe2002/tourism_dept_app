@@ -233,7 +233,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                             color: Colors.black),
                       ),
                       const SizedBox(
-                        height: 12,
+                        height: 20,
                       ),
                       Row(children: [
                         Text(
@@ -318,14 +318,15 @@ class _Details_ScreenState extends State<Details_Screen> {
                           );
                         },
                       ),
-                      SizedBox(height:25),
-                      Text('Rate The post',
-                         style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                      
-                       ),SizedBox(height:17),
+                      SizedBox(height: 25),
+                      Text(
+                        'Rate The post',
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                      SizedBox(height: 17),
                       Center(
                         child: RatingBar.builder(
                             itemBuilder: (context, index) => const Icon(
@@ -412,7 +413,8 @@ class _Details_ScreenState extends State<Details_Screen> {
                                     print("Failed to add rating: $error"));
                               }
                             }),
-                      ),SizedBox(height:25),
+                      ),
+                      SizedBox(height: 25),
                       ElevatedButton(
                         onPressed: () {
                           print('pressed');
@@ -460,6 +462,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                               Icon(Icons.add_comment_rounded, size: 24.0)
                             ]),
                         style: ElevatedButton.styleFrom(
+                            minimumSize: Size(100, 55),
                             backgroundColor: Colors.blue,
                             onPrimary: Colors.white,
                             shape: RoundedRectangleBorder(
@@ -471,6 +474,9 @@ class _Details_ScreenState extends State<Details_Screen> {
                               fontWeight: FontWeight.bold,
                             )),
                       ),
+                      SizedBox(
+                        height: 20,
+                      )
                     ],
                   ),
                 ),
