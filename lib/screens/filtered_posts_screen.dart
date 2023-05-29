@@ -31,7 +31,7 @@ class FilteredPostsScreen extends StatelessWidget {
                 }
                 var posts = snapshot.data!.docs;
                 final filteredPosts = posts
-                    .where((element) => element['name']
+                    .where((element) => element['name'].toString().toLowerCase()
                         .toString()
                         .contains(args['searchParam'].toString().toLowerCase()))
                     .toList();
