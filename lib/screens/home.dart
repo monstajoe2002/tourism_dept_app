@@ -23,7 +23,7 @@ class Home extends StatelessWidget {
             children: [
               InkWell(
                 child: ListTile(
-                  leading:  (user == null)
+                  leading: (user == null)
                       ? const Icon(Icons.login_rounded)
                       : const Icon(Icons.logout_rounded),
                   title: Text(user != null ? 'Logout' : 'Sign In'),
@@ -198,12 +198,8 @@ class _FilterChipExampleState extends State<FilterChipExample> {
                       //   child:
                       Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-<<<<<<< HEAD
                     children: <Widget>[
                       SizedBox(height: 10),
-=======
-                    children: <Widget>[SizedBox(height:10),
->>>>>>> a915ef15b25e077d7172e6a2718aabdb7e07cf79
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -222,12 +218,8 @@ class _FilterChipExampleState extends State<FilterChipExample> {
                             },
                           ).toList(),
                         ),
-<<<<<<< HEAD
                       ),
                       SizedBox(height: 19),
-=======
-                      ),SizedBox(height:19),
->>>>>>> a915ef15b25e077d7172e6a2718aabdb7e07cf79
                       ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,

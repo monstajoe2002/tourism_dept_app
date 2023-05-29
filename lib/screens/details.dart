@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +92,6 @@ class _Details_ScreenState extends State<Details_Screen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-<<<<<<< HEAD
           leading: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -111,10 +109,6 @@ class _Details_ScreenState extends State<Details_Screen> {
           ),
           title: Center(
             child: Text(
-=======
-          title: Center(
-            child: const Text(
->>>>>>> a915ef15b25e077d7172e6a2718aabdb7e07cf79
               "Details",
               style: TextStyle(
                   fontSize: 24,
@@ -186,7 +180,6 @@ class _Details_ScreenState extends State<Details_Screen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-<<<<<<< HEAD
                           Row(
                             children: [
                               const Icon(
@@ -211,50 +204,6 @@ class _Details_ScreenState extends State<Details_Screen> {
                         ],
                       ),
                       const SizedBox(
-=======
-                          Row(children: [
-                            Icon(
-                              Icons.location_on,
-                              size: 25,
-                              color: Color.fromARGB(255, 30, 134, 219),
-                            ),
-                            Text(averagedoc["location"],
-                                style: TextStyle(fontSize: 24, color: Colors.blue))
-                          ]),
-
- Text(averagedoc["type"],
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold))
-
-
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(averagedoc["description"],
-                          style: TextStyle(fontSize: 18)),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      // Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //     children: [
-                      //       Text('Type',
-                      //           style: TextStyle(
-                      //               fontSize: 18,
-                      //               color: Colors.black,
-                      //               fontWeight: FontWeight.bold)),
-                      //       Text(averagedoc["type"],
-                      //           style: TextStyle(
-                      //               fontSize: 18,
-                      //               color: Colors.black,
-                      //               fontWeight: FontWeight.bold))
-                      //     ]),
-                      const Divider(
->>>>>>> a915ef15b25e077d7172e6a2718aabdb7e07cf79
                         height: 20,
                       ),
                       Text(
@@ -273,13 +222,8 @@ class _Details_ScreenState extends State<Details_Screen> {
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
                       ),
-<<<<<<< HEAD
                       const SizedBox(
                         height: 6,
-=======
-                      SizedBox(
-                        height: 8,
->>>>>>> a915ef15b25e077d7172e6a2718aabdb7e07cf79
                       ),
                       Text(
                         averagedoc["recommendation"],
@@ -288,18 +232,7 @@ class _Details_ScreenState extends State<Details_Screen> {
                             fontWeight: FontWeight.normal,
                             color: Colors.black),
                       ),
-<<<<<<< HEAD
                       const SizedBox(
-=======
-                      const Divider(
-                        height: 20,
-                        thickness: 5,
-                        indent: 20,
-                        endIndent: 0,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
->>>>>>> a915ef15b25e077d7172e6a2718aabdb7e07cf79
                         height: 12,
                       ),
                       Row(children: [
@@ -538,4 +471,3 @@ class _Details_ScreenState extends State<Details_Screen> {
             }));
   }
 }
-

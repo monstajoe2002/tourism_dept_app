@@ -152,7 +152,6 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 shape: BoxShape.circle,
                 color: Colors.white.withOpacity(0.2),
               ),
-<<<<<<< HEAD
               padding: const EdgeInsets.all(10.0),
               child: const CircleAvatar(
                 backgroundColor: Colors.white,
@@ -160,20 +159,9 @@ class _NewPostScreenState extends State<NewPostScreen> {
                   Icons.arrow_back,
                   size: 24.0,
                   color: Colors.blue,
-=======
-              child: CircleAvatar(
-                backgroundColor: Colors.blue,
-                child: Text(
-                  '<',
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
->>>>>>> a915ef15b25e077d7172e6a2718aabdb7e07cf79
                 ),
               ),
-              padding: EdgeInsets.all(10.0),
+              //padding: EdgeInsets.all(10.0),
             ),
           ),
         ),
