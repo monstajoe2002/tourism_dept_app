@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
       print('el error b 1');
       return const Text('Error');
     } else {
-      return const LoadingScreen();
+      return LoadingScreen();
     }
   }
 
