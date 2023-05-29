@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:tourism_dept_app/screens/NewExWidget.dart';
 import 'package:tourism_dept_app/screens/login_screen.dart';
 
@@ -208,9 +208,9 @@ class _Details_ScreenState extends State<Details_Screen> {
                       ),
                       Text(
                         averagedoc["description"],
-                        style: GoogleFonts.georama(
-                          fontSize: 20,
-                        ),
+                        // style: GoogleFonts.georama(
+                        //   fontSize: 20,
+                        // ),
                       ),
                       const SizedBox(
                         height: 30,
