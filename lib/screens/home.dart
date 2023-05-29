@@ -20,7 +20,52 @@ class Home extends StatelessWidget {
         appBar: AppBar(),
         drawer: Drawer(
           child: ListView(
+            padding: EdgeInsets.zero,
             children: [
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    (user != null)
+                        ? StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('Users')
+                                .doc(user!.uid)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              var averagedoc = snapshot.data;
+
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: const Color(0xff764abc),
+                                  child:
+                                      Icon(Icons.person_2_outlined, size: 24.0),
+                                ),
+                                title: Text(
+                                  averagedoc!["username"].toString(),
+                                ),
+                                subtitle: Text(averagedoc["email"].toString()),
+                              );
+                            },
+                          )
+                        : ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: const Color(0xff764abc),
+                              child: Icon(Icons.person_2_outlined, size: 24.0),
+                            ),
+                            title: Text('Hi User !'),
+                          ),
+                  ],
+                ),
+              ),
               InkWell(
                 child: ListTile(
                   leading: (user == null)
